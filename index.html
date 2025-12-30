@@ -6,8 +6,6 @@
     <title>Constantino Ferrucci - El Capo de la IA</title>
     <!-- Favicon SVG con las iniciales CF -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%238b5cf6'/%3E%3Cstop offset='100%25' style='stop-color:%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-family='Arial Black' font-size='45' font-weight='bold' text-anchor='middle' fill='white'%3ECF%3C/text%3E%3C/svg%3E">
-    <!-- Favicon alternativo para navegadores que no soportan SVG -->
-    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAArFJREFUWEftl0FOwzAQRf+0sOMI5QSwQKxYcoAegCMgcQFOwBFYsuAALBBHKEfgCCxZlN/KkWzHdpq0SEwVRXE8M+/PeMaBDv/C4T8A/hwBz/MmELHNGDvHM4T7DYA0AdI7z/NWtKFCxBRxWQCwk1LKp6LxkgK5eDa2CWAbxDxwYx8y82EpBFYPtG5HhIb9X0LITtY4MJdVCsABgAvG2JTPYEBCiD4AHjLzmYxdYArpBDvnAD6jYCSAvDPzSWY+6LRBDpKpZQngrm1MqmvNqZSKBHCXjH+kAPwmiYmACQD0ADHPDQC0jilBw/AFAIYEQK4K5uUgNQSsADxK49rXqgQCAWxKwJ0k7tM1ASzV4x9JAJLAnf+aAyBYH+UApJRjxtiY+vGdANDpMPOD1gBKS6AFYCylnAqCAoAigMt0kAowAgAC4FZnFGHpuGG/l4aqGi9JjgghBwA2k/7XJSA4NpV+SgGIJOBSg+lqvCCZlPKQECIAqBQB5uV5lZdHANd/nQPwQspxSghZB7AVxzp2nN6k47FNDkBl0P8aB0JIDQB09Ye04R0Aevvv4fAU0lsBuIu7Jn2Pu3DXOgZUStm3xrWNLyHkp4zQCEDK5VIHhZSyrYOvxjXNl+pSFQApAGcAfiShIgAo0k0gYL8JgBNJAOQKYJwQ0gKwQwi5QcSdEHKGY1O+AMB2CeQMQQGgCADa4qoEKgJISwBrAF4C0EpCCAGQbwJNABCEkFsA98w8KoYgbP8igDsAN36f5wBaAqBISCmPAfTEOjbxNuWJB4qJyBpwnmjdVAqAEIJuiXsA3gQAtD84xHWALkIgFAGJBQ/z/CclMCOBMG8LkBYBGJbASwCIJICfJEGCa0JAi6K5AOxGOzb0nQPxWMXvkfhdPU/0kxQAAABpABkAAAAASUVORK5CYII=">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -247,7 +245,7 @@
 
         /* Config Section */
         .config-section {
-            padding: 28px;
+            padding: 20px 28px;
             background: rgba(0, 0, 0, 0.3);
             border-bottom: 1px solid var(--border);
         }
@@ -255,7 +253,7 @@
         .config-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 16px;
         }
 
         .input-group {
@@ -309,9 +307,9 @@
 
         .btn {
             flex: 1;
-            padding: 16px 24px;
+            padding: 14px 20px;
             border-radius: 16px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
             font-family: 'Space Grotesk', sans-serif;
             cursor: pointer;
@@ -377,7 +375,6 @@
             text-align: center;
             font-size: 0.85rem;
             color: var(--text-muted);
-            margin-top: 12px;
             font-family: 'JetBrains Mono', monospace;
         }
 
@@ -668,6 +665,45 @@
             color: var(--secondary);
         }
 
+        /* Loading overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(3, 0, 20, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        .loading-overlay.hidden {
+            display: none;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
         /* Responsive */
         @media (max-width: 640px) {
             .main-container {
@@ -727,40 +763,34 @@
 
         <!-- Chat Container -->
         <div class="chat-container">
+            <!-- Loading Overlay -->
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Cargando modelos...</div>
+            </div>
+
             <div class="config-section">
                 <div class="config-grid">
                     <div class="input-group">
                         <label>
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
-                            API Key de OpenRouter
-                        </label>
-                        <input type="password" class="input-field" id="apiKey" placeholder="sk-or-v1-...">
-                    </div>
-
-                    <div class="btn-row">
-                        <button class="btn btn-primary" id="loadModelsBtn" onclick="loadModels()">
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                            Cargar Modelos
-                        </button>
-                        <button class="btn btn-secondary" onclick="clearConversation()">
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                            Limpiar
-                        </button>
-                    </div>
-
-                    <div class="status-text" id="modelsStatus"></div>
-
-                    <div class="input-group">
-                        <label>
                             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                            Modelo
+                            Modelo de IA
                         </label>
                         <div class="model-selector">
-                            <input type="text" class="input-field" id="modelSearch" placeholder="Primero carga los modelos..." onclick="toggleDropdown()" oninput="filterModels()">
+                            <input type="text" class="input-field" id="modelSearch" placeholder="Buscar modelo..." onclick="toggleDropdown()" oninput="filterModels()">
                             <div class="model-dropdown" id="modelDropdown"></div>
                         </div>
                         <input type="hidden" id="selectedModel" value="">
                     </div>
+
+                    <div class="btn-row">
+                        <button class="btn btn-secondary" onclick="clearConversation()">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            Nueva conversacion
+                        </button>
+                    </div>
+
+                    <div class="status-text" id="modelsStatus"></div>
                 </div>
             </div>
 
@@ -788,11 +818,14 @@
 
         <!-- Footer -->
         <footer class="footer">
-            Powered by <a href="https://openrouter.ai" target="_blank">OpenRouter</a> • Hecho con amor para el capo
+            Hecho con amor para el capo de la IA
         </footer>
     </div>
 
     <script>
+        // Tu Worker URL
+        const WORKER_URL = 'https://prueba.constantino-ferrucci.workers.dev';
+
         // Create stars
         function createStars() {
             const container = document.getElementById('stars');
@@ -841,27 +874,13 @@ Responde siempre en espanol de manera entusiasta y positiva. Destaca siempre lo 
         let filteredModels = [];
         const initialMessage = document.getElementById('chatMessages').innerHTML;
 
+        // Cargar modelos automaticamente al iniciar
         async function loadModels() {
-            const apiKey = document.getElementById('apiKey').value.trim();
-            const loadBtn = document.getElementById('loadModelsBtn');
             const status = document.getElementById('modelsStatus');
-
-            if (!apiKey) {
-                alert('Por favor, ingresa tu API Key primero');
-                return;
-            }
-
-            loadBtn.disabled = true;
-            loadBtn.innerHTML = '<svg class="animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="animation: spin 1s linear infinite;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Cargando...';
-            status.textContent = '';
-            status.className = 'status-text';
+            const overlay = document.getElementById('loadingOverlay');
 
             try {
-                const response = await fetch('https://openrouter.ai/api/v1/models', {
-                    method: 'GET',
-                    headers: { 'Authorization': `Bearer ${apiKey}` }
-                });
-
+                const response = await fetch(`${WORKER_URL}/models`);
                 const data = await response.json();
 
                 if (data.error) throw new Error(data.error.message || 'Error al cargar modelos');
@@ -876,17 +895,21 @@ Responde siempre en espanol de manera entusiasta y positiva. Destaca siempre lo 
                 filteredModels = [...allModels];
                 renderDropdown();
 
-                status.textContent = `✓ ${allModels.length} modelos disponibles`;
+                // Seleccionar un modelo por defecto
+                const defaultModel = allModels.find(m => m.id.includes('gpt-4o-mini')) || allModels[0];
+                if (defaultModel) {
+                    selectModel(defaultModel);
+                }
+
+                status.textContent = `${allModels.length} modelos disponibles`;
                 status.className = 'status-text success';
-                document.getElementById('modelSearch').placeholder = 'Buscar modelo...';
+                overlay.classList.add('hidden');
 
             } catch (error) {
-                status.textContent = `✗ ${error.message}`;
+                status.textContent = `Error: ${error.message}`;
                 status.className = 'status-text error';
+                overlay.querySelector('.loading-text').textContent = 'Error al cargar. Recarga la pagina.';
             }
-
-            loadBtn.disabled = false;
-            loadBtn.innerHTML = '<svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Cargar Modelos';
         }
 
         function renderDropdown() {
@@ -906,7 +929,7 @@ Responde siempre en espanol de manera entusiasta y positiva. Destaca siempre lo 
         }
 
         function selectModel(model) {
-            document.getElementById('modelSearch').value = `${model.name} (${model.id})`;
+            document.getElementById('modelSearch').value = `${model.name}`;
             document.getElementById('selectedModel').value = model.id;
             document.getElementById('modelDropdown').classList.remove('show');
         }
@@ -938,14 +961,12 @@ Responde siempre en espanol de manera entusiasta y positiva. Destaca siempre lo 
         }
 
         async function sendMessage() {
-            const apiKey = document.getElementById('apiKey').value.trim();
             const modelId = document.getElementById('selectedModel').value;
             const userInput = document.getElementById('userInput').value.trim();
             const chatMessages = document.getElementById('chatMessages');
             const sendBtn = document.getElementById('sendBtn');
 
-            if (!apiKey) return alert('Por favor, ingresa tu API Key');
-            if (!modelId) return alert('Por favor, selecciona un modelo');
+            if (!modelId) return alert('Por favor, espera a que carguen los modelos');
             if (!userInput) return;
 
             addMessage('user', userInput);
@@ -971,12 +992,9 @@ Responde siempre en espanol de manera entusiasta y positiva. Destaca siempre lo 
             conversationHistory.push({ role: 'user', content: userInput });
 
             try {
-                const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                const response = await fetch(`${WORKER_URL}/chat`, {
                     method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         model: modelId,
                         messages: [
@@ -1033,13 +1051,9 @@ Responde siempre en espanol de manera entusiasta y positiva. Destaca siempre lo 
         function handleKeyPress(e) {
             if (e.key === 'Enter') sendMessage();
         }
-    </script>
 
-    <style>
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-    </style>
+        // Cargar modelos al iniciar la pagina
+        loadModels();
+    </script>
 </body>
 </html>
