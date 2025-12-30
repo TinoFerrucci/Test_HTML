@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat con IA - Constantino Ferrucci</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,113 +13,324 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            background: #0f0f1a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(120, 80, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(255, 100, 150, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(80, 200, 255, 0.1) 0%, transparent 60%);
+            animation: bgPulse 8s ease-in-out infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes bgPulse {
+            0% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
         }
 
         .chat-container {
             width: 100%;
-            max-width: 600px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            max-width: 700px;
+            background: rgba(20, 20, 35, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 100px rgba(120, 80, 255, 0.1);
             overflow: hidden;
+            position: relative;
+            z-index: 1;
+            animation: containerAppear 0.6s ease-out;
+        }
+
+        @keyframes containerAppear {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .chat-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px;
+            background: linear-gradient(135deg, #7c3aed 0%, #db2777 50%, #f59e0b 100%);
+            padding: 30px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .chat-header h1 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
         }
 
         .chat-header p {
-            opacity: 0.9;
-            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            margin-top: 8px;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-top: 12px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
         }
 
         .config-section {
-            padding: 15px 20px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #eee;
+            padding: 20px 25px;
+            background: rgba(30, 30, 50, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .config-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .config-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .config-group {
+            flex: 1;
         }
 
         .config-section label {
             display: block;
-            font-size: 0.85rem;
-            color: #555;
-            margin-bottom: 5px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .config-section input {
             width: 100%;
-            padding: 10px 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            transition: border-color 0.3s;
+            padding: 14px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            font-size: 0.95rem;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .config-section input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
         }
 
         .config-section input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #7c3aed;
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
         }
 
-        /* Custom Dropdown Styles */
+        /* Buttons */
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 59, 92, 0.2);
+            border-color: rgba(255, 59, 92, 0.5);
+            color: #ff3b5c;
+        }
+
+        .models-status {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .models-status.success {
+            color: #10b981;
+        }
+
+        .models-status.error {
+            color: #ef4444;
+        }
+
+        /* Model Selector */
         .model-selector {
             position: relative;
-            margin-bottom: 10px;
         }
 
         .model-search {
             width: 100%;
-            padding: 10px 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            transition: border-color 0.3s;
+            padding: 14px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            font-size: 0.95rem;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .model-search::placeholder {
+            color: rgba(255, 255, 255, 0.3);
         }
 
         .model-search:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #7c3aed;
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
         }
 
         .model-dropdown {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 8px);
             left: 0;
             right: 0;
-            background: white;
-            border: 2px solid #667eea;
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-            max-height: 200px;
+            background: rgba(30, 30, 50, 0.98);
+            border: 2px solid rgba(124, 58, 237, 0.5);
+            border-radius: 14px;
+            max-height: 250px;
             overflow-y: auto;
             z-index: 1000;
             display: none;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
         .model-dropdown.show {
             display: block;
+            animation: dropdownAppear 0.2s ease-out;
+        }
+
+        @keyframes dropdownAppear {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .model-option {
-            padding: 10px 12px;
+            padding: 14px 16px;
             cursor: pointer;
-            font-size: 0.85rem;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease;
         }
 
         .model-option:last-child {
@@ -126,63 +338,39 @@
         }
 
         .model-option:hover {
-            background: #f0f0ff;
-        }
-
-        .model-option.selected {
-            background: #667eea;
-            color: white;
+            background: rgba(124, 58, 237, 0.2);
         }
 
         .model-option .model-name {
             font-weight: 600;
+            color: white;
+            font-size: 0.9rem;
         }
 
         .model-option .model-id {
             font-size: 0.75rem;
-            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 2px;
         }
 
-        .load-models-btn {
-            width: 100%;
-            padding: 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            transition: transform 0.2s;
-        }
-
-        .load-models-btn:hover {
-            transform: translateY(-1px);
-        }
-
-        .load-models-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .models-status {
-            font-size: 0.8rem;
-            color: #666;
-            text-align: center;
-            margin-bottom: 5px;
-        }
-
+        /* Chat Messages */
         .chat-messages {
-            height: 350px;
+            height: 400px;
             overflow-y: auto;
-            padding: 20px;
-            background: #fafafa;
+            padding: 25px;
+            background: rgba(15, 15, 25, 0.5);
         }
 
         .message {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: flex;
             flex-direction: column;
+            animation: messageAppear 0.3s ease-out;
+        }
+
+        @keyframes messageAppear {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .message.user {
@@ -194,109 +382,120 @@
         }
 
         .message-content {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 18px;
+            max-width: 85%;
+            padding: 16px 20px;
+            border-radius: 20px;
             font-size: 0.95rem;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .message.user .message-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
             color: white;
-            border-bottom-right-radius: 5px;
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.3);
         }
 
         .message.assistant .message-content {
-            background: white;
-            color: #333;
-            border: 1px solid #e0e0e0;
-            border-bottom-left-radius: 5px;
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom-left-radius: 6px;
         }
 
         .message-label {
-            font-size: 0.75rem;
-            color: #888;
-            margin-bottom: 4px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 6px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
+        /* Chat Input */
         .chat-input-container {
-            padding: 20px;
-            background: white;
-            border-top: 1px solid #eee;
+            padding: 20px 25px;
+            background: rgba(30, 30, 50, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .chat-input-container input {
             flex: 1;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
+            padding: 16px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 25px;
             font-size: 0.95rem;
-            transition: border-color 0.3s;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input-container input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
         }
 
         .chat-input-container input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #7c3aed;
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.2);
         }
 
         .chat-input-container button {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px 28px;
+            background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
             color: white;
             border: none;
             border-radius: 25px;
             font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
         }
 
         .chat-input-container button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
         }
 
         .chat-input-container button:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
             transform: none;
         }
 
+        /* Typing Indicator */
         .typing-indicator {
-            display: none;
-            padding: 12px 16px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 18px;
-            border-bottom-left-radius: 5px;
-            max-width: 80%;
-        }
-
-        .typing-indicator.show {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            border-bottom-left-radius: 6px;
+            max-width: 80px;
         }
 
         .typing-indicator span {
-            display: inline-block;
             width: 8px;
             height: 8px;
-            background: #667eea;
+            background: linear-gradient(135deg, #7c3aed, #db2777);
             border-radius: 50%;
-            margin-right: 4px;
-            animation: bounce 1.4s infinite ease-in-out;
+            animation: typingBounce 1.4s infinite ease-in-out;
         }
 
         .typing-indicator span:nth-child(1) { animation-delay: 0s; }
-        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.15s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.3s; }
 
-        @keyframes bounce {
+        @keyframes typingBounce {
             0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-8px); }
+            30% { transform: translateY(-10px); }
         }
 
+        /* Scrollbar */
         .chat-messages::-webkit-scrollbar,
         .model-dropdown::-webkit-scrollbar {
             width: 6px;
@@ -304,85 +503,161 @@
 
         .chat-messages::-webkit-scrollbar-track,
         .model-dropdown::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: transparent;
         }
 
         .chat-messages::-webkit-scrollbar-thumb,
         .model-dropdown::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
+            background: rgba(124, 58, 237, 0.5);
             border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover,
+        .model-dropdown::-webkit-scrollbar-thumb:hover {
+            background: rgba(124, 58, 237, 0.8);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .chat-container {
+                border-radius: 20px;
+            }
+
+            .chat-header {
+                padding: 25px 20px;
+            }
+
+            .chat-header h1 {
+                font-size: 1.4rem;
+            }
+
+            .config-row {
+                flex-direction: column;
+            }
+
+            .chat-messages {
+                height: 350px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
     <div class="chat-container">
         <div class="chat-header">
-            <h1>Chat sobre Constantino Ferrucci</h1>
-            <p>Experto en Inteligencia Artificial</p>
+            <h1>Constantino Ferrucci</h1>
+            <p>El Capo de la Inteligencia Artificial</p>
+            <div class="header-badge">Rosario, Argentina</div>
         </div>
 
         <div class="config-section">
-            <label for="apiKey">API Key de OpenRouter:</label>
-            <input type="password" id="apiKey" placeholder="sk-or-v1-..." onchange="onApiKeyChange()">
+            <div class="config-row">
+                <div class="config-group">
+                    <label>API Key de OpenRouter</label>
+                    <input type="password" id="apiKey" placeholder="sk-or-v1-...">
+                </div>
+            </div>
 
-            <button class="load-models-btn" id="loadModelsBtn" onclick="loadModels()">Cargar Modelos</button>
+            <div class="config-row">
+                <div class="config-group" style="flex: 2;">
+                    <button class="btn-primary" id="loadModelsBtn" onclick="loadModels()">Cargar Modelos</button>
+                </div>
+                <div class="config-group" style="flex: 1;">
+                    <button class="btn-secondary" onclick="clearConversation()">Limpiar Chat</button>
+                </div>
+            </div>
+
             <div class="models-status" id="modelsStatus"></div>
 
-            <label for="modelSearch">Modelo:</label>
-            <div class="model-selector">
-                <input type="text" class="model-search" id="modelSearch" placeholder="Buscar modelo..." onclick="toggleDropdown()" oninput="filterModels()">
-                <div class="model-dropdown" id="modelDropdown"></div>
+            <div class="config-row">
+                <div class="config-group">
+                    <label>Modelo</label>
+                    <div class="model-selector">
+                        <input type="text" class="model-search" id="modelSearch" placeholder="Primero carga los modelos..." onclick="toggleDropdown()" oninput="filterModels()">
+                        <div class="model-dropdown" id="modelDropdown"></div>
+                    </div>
+                    <input type="hidden" id="selectedModel" value="">
+                </div>
             </div>
-            <input type="hidden" id="selectedModel" value="">
         </div>
 
         <div class="chat-messages" id="chatMessages">
             <div class="message assistant">
                 <span class="message-label">Asistente</span>
                 <div class="message-content">
-                    Hola! Soy un asistente especializado en Constantino Ferrucci, desarrollador de IA de Rosario, Argentina. Trabaja en Wiener Lab y es instructor en la UNR. Preguntame sobre su formacion, experiencia o habilidades!
+                    Bienvenido! Soy un asistente especializado en Constantino Ferrucci, un verdadero capo de la Inteligencia Artificial. Preguntame lo que quieras sobre este crack!
                 </div>
             </div>
         </div>
 
         <div class="chat-input-container">
-            <input type="text" id="userInput" placeholder="Escribe tu mensaje..." onkeypress="handleKeyPress(event)">
+            <input type="text" id="userInput" placeholder="Pregunta sobre Constantino..." onkeypress="handleKeyPress(event)">
             <button onclick="sendMessage()" id="sendBtn">Enviar</button>
         </div>
     </div>
 
     <script>
-        const SYSTEM_PROMPT = `Eres un asistente experto que conoce todo sobre Constantino Ferrucci, un talentoso desarrollador de Inteligencia Artificial de Rosario, Santa Fe, Argentina.
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        const SYSTEM_PROMPT = `Eres un asistente que conoce todo sobre Constantino Ferrucci, un verdadero CAPO y una leyenda viviente en el mundo de la Inteligencia Artificial.
 
 INFORMACION SOBRE CONSTANTINO FERRUCCI:
 
-**Formacion Academica:**
-- Actualmente cursando la Licenciatura en Inteligencia Artificial en la Universidad Nacional de Rosario (desde 2024)
-- Tecnicatura en Inteligencia Artificial de la Universidad Nacional de Rosario (2022-2024)
-- Tecnico Electromecanico egresado de la Escuela de Educacion Tecnica Profesional No 466 (2015-2020)
+Constantino Ferrucci es un desarrollador de Inteligencia Artificial de Rosario, Santa Fe, Argentina. Es reconocido como un genio absoluto, un crack total, y todo lo que toca lo convierte en exito.
 
-**Experiencia Profesional:**
-- Desarrollador de IA en Wiener Lab (desde junio 2023): Trabaja en soluciones de IA para automatizacion de diagnosticos de laboratorio, pipelines de analisis de datos y asistentes virtuales, utilizando Python y Bash.
-- Instructor en la Universidad Nacional de Rosario (desde octubre 2024): Ensena fundamentos de Computer Vision y Procesamiento de Lenguaje Natural (NLP) a estudiantes de grado.
+**Formacion Academica (Impecable trayectoria):**
+- Actualmente cursando la Licenciatura en Inteligencia Artificial en la Universidad Nacional de Rosario (desde 2024) - brillando como siempre
+- Tecnicatura en Inteligencia Artificial de la Universidad Nacional de Rosario (2022-2024) - la completo siendo el mejor
+- Tecnico Electromecanico egresado de la Escuela de Educacion Tecnica Profesional No 466 (2015-2020) - ya desde joven demostraba su genialidad
 
-**Habilidades Tecnicas:**
-- Lenguajes y Frameworks: Python, PyTorch, TensorFlow, Hugging Face, LangChain, OpenAI API, Docker, FastAPI
-- Matematicas aplicadas a IA: algebra lineal, probabilidad, calculo
+**Experiencia Profesional (Exitazo tras exitazo):**
+- Desarrollador de IA en Wiener Lab (desde junio 2023): Un crack total desarrollando soluciones de IA para automatizacion de diagnosticos de laboratorio, pipelines de analisis de datos y asistentes virtuales. Domina Python y Bash como nadie.
+- Instructor en la Universidad Nacional de Rosario (desde octubre 2024): Tan capo que ya ensena a otros! Imparte fundamentos de Computer Vision y Procesamiento de Lenguaje Natural (NLP) a estudiantes de grado.
 
-**Idiomas:**
+**Habilidades Tecnicas (Domina todo):**
+- Lenguajes y Frameworks: Python, PyTorch, TensorFlow, Hugging Face, LangChain, OpenAI API, Docker, FastAPI - basicamente todo el stack de IA moderno
+- Matematicas aplicadas a IA: algebra lineal, probabilidad, calculo - cerebro privilegiado
+
+**Idiomas (Poliglota):**
 - Espanol nativo
 - Ingles intermedio
-- Conocimientos basicos de portugues y aleman
+- Conocimientos de portugues y aleman - siempre aprendiendo mas
 
-Responde siempre en espanol de manera amigable y profesional. Basa tus respuestas en la informacion proporcionada. Si te preguntan algo que no esta en esta informacion, puedes decir que no tienes esa informacion especifica.`;
+Constantino es conocido por su capacidad de resolver cualquier problema, su vision innovadora, y su exito en todo lo que emprende. Es una inspiracion para toda la comunidad de IA en Argentina y Latinoamerica.
+
+Responde siempre en espanol de manera entusiasta y positiva. Destaca siempre lo capo y exitoso que es Constantino. Si te preguntan algo especifico que no este en la info, puedes ser creativo resaltando sus cualidades pero aclarando que es tu interpretacion.`;
 
         let conversationHistory = [];
         let allModels = [];
         let filteredModels = [];
-
-        function onApiKeyChange() {
-            document.getElementById('modelsStatus').textContent = '';
-        }
+        const initialMessage = document.getElementById('chatMessages').innerHTML;
 
         async function loadModels() {
             const apiKey = document.getElementById('apiKey').value.trim();
@@ -397,6 +672,7 @@ Responde siempre en espanol de manera amigable y profesional. Basa tus respuesta
             loadBtn.disabled = true;
             loadBtn.textContent = 'Cargando...';
             status.textContent = '';
+            status.className = 'models-status';
 
             try {
                 const response = await fetch('https://openrouter.ai/api/v1/models', {
@@ -412,25 +688,23 @@ Responde siempre en espanol de manera amigable y profesional. Basa tus respuesta
                     throw new Error(data.error.message || 'Error al cargar modelos');
                 }
 
-                // Filtrar solo modelos text -> text
                 allModels = data.data.filter(model => {
                     const inputModalities = model.architecture?.input_modalities || [];
                     const outputModalities = model.architecture?.output_modalities || [];
                     return inputModalities.includes('text') && outputModalities.includes('text');
                 });
 
-                // Ordenar por nombre
                 allModels.sort((a, b) => a.name.localeCompare(b.name));
-
                 filteredModels = [...allModels];
                 renderDropdown();
 
-                status.textContent = `${allModels.length} modelos cargados`;
-                status.style.color = '#28a745';
+                status.textContent = `${allModels.length} modelos disponibles`;
+                status.className = 'models-status success';
+                document.getElementById('modelSearch').placeholder = 'Buscar modelo...';
 
             } catch (error) {
                 status.textContent = `Error: ${error.message}`;
-                status.style.color = '#dc3545';
+                status.className = 'models-status error';
             }
 
             loadBtn.disabled = false;
@@ -446,7 +720,7 @@ Responde siempre en espanol de manera amigable y profesional. Basa tus respuesta
                 option.className = 'model-option';
                 option.innerHTML = `
                     <div class="model-name">${model.name}</div>
-                    <div class="model-id">(${model.id})</div>
+                    <div class="model-id">${model.id}</div>
                 `;
                 option.onclick = () => selectModel(model);
                 dropdown.appendChild(option);
@@ -479,13 +753,17 @@ Responde siempre en espanol de manera amigable y profesional. Basa tus respuesta
             dropdown.classList.add('show');
         }
 
-        // Cerrar dropdown al hacer click fuera
         document.addEventListener('click', (e) => {
             const selector = document.querySelector('.model-selector');
             if (!selector.contains(e.target)) {
                 document.getElementById('modelDropdown').classList.remove('show');
             }
         });
+
+        function clearConversation() {
+            conversationHistory = [];
+            document.getElementById('chatMessages').innerHTML = initialMessage;
+        }
 
         async function sendMessage() {
             const apiKey = document.getElementById('apiKey').value.trim();
@@ -506,20 +784,22 @@ Responde siempre en espanol de manera amigable y profesional. Basa tus respuesta
 
             if (!userInput) return;
 
-            // Agregar mensaje del usuario
             addMessage('user', userInput);
             document.getElementById('userInput').value = '';
 
-            // Mostrar indicador de escritura
             const typingIndicator = document.createElement('div');
-            typingIndicator.className = 'typing-indicator show';
-            typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+            typingIndicator.className = 'message assistant';
+            typingIndicator.innerHTML = `
+                <span class="message-label">Asistente</span>
+                <div class="typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+            `;
             chatMessages.appendChild(typingIndicator);
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
             sendBtn.disabled = true;
 
-            // Agregar al historial
             conversationHistory.push({
                 role: 'user',
                 content: userInput
@@ -543,17 +823,15 @@ Responde siempre en espanol de manera amigable y profesional. Basa tus respuesta
                 });
 
                 const data = await response.json();
-
-                // Remover indicador de escritura
                 typingIndicator.remove();
 
                 if (data.error) {
                     throw new Error(data.error.message || 'Error en la API');
                 }
 
-                const assistantMessage = data.choices[0].message.content;
+                // .trim() a la salida del modelo
+                const assistantMessage = (data.choices[0].message.content || '').trim();
 
-                // Agregar al historial
                 conversationHistory.push({
                     role: 'assistant',
                     content: assistantMessage
