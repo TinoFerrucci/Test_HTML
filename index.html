@@ -3,463 +3,824 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Constantino Ferrucci - El Capo de la IA</title>
-    <!-- Favicon SVG con las iniciales CF -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%238b5cf6'/%3E%3Cstop offset='100%25' style='stop-color:%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-family='Arial Black' font-size='45' font-weight='bold' text-anchor='middle' fill='white'%3ECF%3C/text%3E%3C/svg%3E">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <title>Constantino Ferrucci | AI Developer</title>
+    <meta name="description" content="Constantino Ferrucci - Desarrollador de IA en Rosario, Argentina. Portfolio, proyectos y chatbot personal.">
+    <meta name="theme-color" content="#0a0a0f">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%236366f1'/%3E%3Cstop offset='100%25' style='stop-color:%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-family='Arial Black' font-size='45' font-weight='bold' text-anchor='middle' fill='white'%3ECF%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #8b5cf6;
-            --primary-dark: #7c3aed;
-            --secondary: #ec4899;
-            --accent: #f59e0b;
-            --success: #10b981;
-            --error: #ef4444;
-            --bg-dark: #030014;
-            --bg-card: rgba(15, 10, 40, 0.7);
-            --text: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.5);
-            --border: rgba(255, 255, 255, 0.08);
-            --glow: rgba(139, 92, 246, 0.5);
+            --bg: #050507;
+            --bg-secondary: #0a0a12;
+            --surface: rgba(255,255,255,0.03);
+            --surface-hover: rgba(255,255,255,0.06);
+            --border: rgba(255,255,255,0.06);
+            --border-hover: rgba(255,255,255,0.12);
+            --text: #f0f0f5;
+            --text-secondary: rgba(255,255,255,0.5);
+            --text-muted: rgba(255,255,255,0.3);
+            --accent: #6366f1;
+            --accent-light: #818cf8;
+            --accent-glow: rgba(99,102,241,0.4);
+            --purple: #a855f7;
+            --pink: #ec4899;
+            --cyan: #22d3ee;
+            --green: #10b981;
+            --amber: #f59e0b;
+            --red: #ef4444;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         html {
             scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) transparent;
         }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.5); }
 
         body {
-            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-            min-height: 100vh;
-            background: var(--bg-dark);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
             color: var(--text);
             overflow-x: hidden;
-            overflow-y: auto;
+            cursor: none;
         }
 
-        /* Animated gradient background */
-        .bg-gradient {
+        a { color: inherit; text-decoration: none; }
+
+        /* CUSTOM CURSOR */
+        .cursor-dot {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(ellipse 80% 80% at 50% -20%, rgba(120, 58, 237, 0.3) 0%, transparent 50%),
-                radial-gradient(ellipse 60% 60% at 100% 100%, rgba(236, 72, 153, 0.2) 0%, transparent 50%),
-                radial-gradient(ellipse 60% 60% at 0% 100%, rgba(245, 158, 11, 0.15) 0%, transparent 50%);
-            z-index: 0;
-        }
-
-        /* Grid pattern overlay */
-        .bg-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image:
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: 0;
-        }
-
-        /* Floating orbs */
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.5;
-            animation: orbFloat 20s ease-in-out infinite;
-            z-index: 0;
-        }
-
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--primary);
-            top: -100px;
-            left: -100px;
-            animation-delay: 0s;
-        }
-
-        .orb-2 {
-            width: 300px;
-            height: 300px;
-            background: var(--secondary);
-            bottom: -50px;
-            right: -50px;
-            animation-delay: -7s;
-        }
-
-        .orb-3 {
-            width: 250px;
-            height: 250px;
+            width: 8px;
+            height: 8px;
             background: var(--accent);
-            top: 50%;
-            left: 50%;
-            animation-delay: -14s;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.1s ease;
+            mix-blend-mode: screen;
         }
 
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(50px, -50px) scale(1.1); }
-            50% { transform: translate(0, 50px) scale(0.9); }
-            75% { transform: translate(-50px, -25px) scale(1.05); }
+        .cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1.5px solid rgba(99,102,241,0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: all 0.15s ease;
         }
 
-        /* Stars */
-        .stars {
+        .cursor-ring.hover {
+            width: 60px;
+            height: 60px;
+            border-color: var(--accent);
+            background: rgba(99,102,241,0.05);
+        }
+
+        /* CANVAS BG */
+        #particleCanvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
             z-index: 0;
+            pointer-events: none;
         }
 
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 3s ease-in-out infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.5); }
-        }
-
-        /* Main container */
-        .main-container {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .hero-badge::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--success);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 700;
-            background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 12px;
-            letter-spacing: -0.02em;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .hero-subtitle {
+        /* NAVIGATION */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 16px;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
         }
 
-        .hero-tag {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* Chat Container */
-        .chat-container {
-            width: 100%;
-            max-width: 800px;
-            background: var(--bg-card);
-            backdrop-filter: blur(40px);
-            border-radius: 32px;
-            border: 1px solid var(--border);
-            box-shadow:
-                0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-                0 40px 80px rgba(0, 0, 0, 0.5),
-                0 0 80px rgba(139, 92, 246, 0.1);
-            overflow: hidden;
-            animation: fadeInUp 0.8s ease-out 0.2s backwards;
-        }
-
-        /* Config Section */
-        .config-section {
-            padding: 20px 28px;
-            background: rgba(0, 0, 0, 0.3);
+        .nav.scrolled {
+            padding: 12px 40px;
+            background: rgba(5,5,7,0.8);
+            backdrop-filter: blur(20px) saturate(180%);
             border-bottom: 1px solid var(--border);
         }
 
-        .config-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: none;
         }
 
-        .input-group {
+        .nav-logo span {
+            -webkit-text-fill-color: var(--text-muted);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: none;
             position: relative;
         }
 
-        .input-group label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 10px;
-        }
-
-        .input-group label svg {
-            width: 14px;
-            height: 14px;
-            opacity: 0.7;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 16px 20px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 2px solid var(--border);
-            border-radius: 16px;
-            font-size: 1rem;
-            font-family: 'JetBrains Mono', monospace;
+        .nav-link:hover {
             color: var(--text);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--surface);
         }
 
-        .input-field::placeholder {
-            color: rgba(255, 255, 255, 0.25);
+        .nav-link.active {
+            color: var(--accent-light);
+            background: rgba(99,102,241,0.1);
         }
 
-        .input-field:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15), 0 0 30px rgba(139, 92, 246, 0.2);
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: none;
+            padding: 8px;
         }
 
-        .btn-row {
-            display: flex;
-            gap: 12px;
+        .nav-hamburger span {
+            width: 24px;
+            height: 2px;
+            background: var(--text-secondary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
         }
 
-        .btn {
-            flex: 1;
-            padding: 14px 20px;
-            border-radius: 16px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            font-family: 'Space Grotesk', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            position: relative;
+            z-index: 1;
+            padding: 120px 40px 80px;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border: none;
-            color: white;
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(99,102,241,0.08);
+            border: 1px solid rgba(99,102,241,0.2);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--accent-light);
+            margin-bottom: 32px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards 0.2s;
+        }
+
+        .hero-tag-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .hero-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards 0.4s;
+        }
+
+        .hero-name-gradient {
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 40%, var(--purple) 70%, var(--pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease-in-out infinite, fadeUp 1s ease forwards 0.4s;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-title {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards 0.7s;
+        }
+
+        .hero-title .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: var(--accent);
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: cursorBlink 1s step-end infinite;
+        }
+
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards 1s;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: none;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
             position: relative;
             overflow: hidden;
         }
 
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: 0.6s;
-        }
-
-        .btn-primary:hover::before {
-            left: 100%;
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            color: #fff;
+            border: none;
+            box-shadow: 0 8px 32px rgba(99,102,241,0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 16px 48px rgba(99,102,241,0.4);
         }
 
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg) translateY(-100%);
+            transition: 0.6s;
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.03);
-            border: 2px solid var(--border);
+        .btn-primary:hover::after { transform: rotate(45deg) translateY(0); }
+
+        .btn-ghost {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+        }
+
+        .btn svg { width: 18px; height: 18px; }
+
+        /* HERO FLOATING ELEMENTS */
+        .hero-float {
+            position: absolute;
+            opacity: 0;
+            animation: floatIn 1s ease forwards;
+        }
+
+        .hero-float-1 {
+            top: 15%;
+            left: 8%;
+            animation-delay: 1.5s;
+        }
+
+        .hero-float-2 {
+            top: 20%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .hero-float-3 {
+            bottom: 20%;
+            left: 12%;
+            animation-delay: 2.5s;
+        }
+
+        .hero-float-4 {
+            bottom: 25%;
+            right: 8%;
+            animation-delay: 1.8s;
+        }
+
+        @keyframes floatIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .float-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px 20px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: float 6s ease-in-out infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .float-card .icon { font-size: 1.3rem; }
+
+        /* SCROLL INDICATOR */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 2s;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.7rem;
             color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 500;
         }
 
-        .btn-secondary:hover {
-            background: rgba(239, 68, 68, 0.1);
-            border-color: rgba(239, 68, 68, 0.5);
-            color: var(--error);
+        .scroll-mouse {
+            width: 24px;
+            height: 38px;
+            border: 2px solid var(--text-muted);
+            border-radius: 12px;
+            position: relative;
         }
 
-        .btn svg {
-            width: 18px;
-            height: 18px;
+        .scroll-mouse::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 2px;
+            animation: scrollDown 2s ease-in-out infinite;
         }
 
-        .status-text {
+        @keyframes scrollDown {
+            0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(14px); }
+        }
+
+        /* SECTIONS */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 120px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 16px;
+            padding: 6px 14px;
+            background: rgba(99,102,241,0.08);
+            border: 1px solid rgba(99,102,241,0.15);
+            border-radius: 8px;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        .section-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 600px;
+            margin-bottom: 48px;
+        }
+
+        /* ABOUT */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .about-text {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .about-text p { margin-bottom: 20px; }
+
+        .about-text strong { color: var(--text); }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
             text-align: center;
+            transition: all 0.3s ease;
+            cursor: none;
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-hover);
+            background: var(--surface-hover);
+            transform: translateY(-4px);
+        }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* SKILLS */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .skill-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+            cursor: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(99,102,241,0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-card:hover::before { opacity: 1; }
+
+        .skill-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(99,102,241,0.1);
+        }
+
+        .skill-name {
+            font-weight: 600;
             font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+
+        .skill-level {
+            font-size: 0.7rem;
             color: var(--text-muted);
             font-family: 'JetBrains Mono', monospace;
         }
 
-        .status-text.success {
-            color: var(--success);
-        }
-
-        .status-text.error {
-            color: var(--error);
-        }
-
-        /* Model Selector */
-        .model-selector {
+        /* EXPERIENCE */
+        .timeline {
             position: relative;
+            padding-left: 40px;
         }
 
-        .model-dropdown {
+        .timeline::before {
+            content: '';
             position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
-            right: 0;
-            background: rgba(15, 10, 40, 0.98);
-            border: 2px solid var(--primary);
-            border-radius: 16px;
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 100;
-            display: none;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 50px rgba(139, 92, 246, 0.2);
+            left: 7px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), var(--purple), transparent);
         }
 
-        .model-dropdown.show {
-            display: block;
-            animation: dropdownSlide 0.2s ease-out;
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
         }
 
-        @keyframes dropdownSlide {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            background: var(--bg);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            z-index: 1;
         }
 
-        .model-option {
-            padding: 16px 20px;
-            cursor: pointer;
-            border-bottom: 1px solid var(--border);
-            transition: all 0.2s ease;
+        .timeline-item:nth-child(2)::before { border-color: var(--purple); }
+        .timeline-item:nth-child(3)::before { border-color: var(--cyan); }
+
+        .timeline-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 8px;
         }
 
-        .model-option:last-child {
-            border-bottom: none;
-        }
-
-        .model-option:hover {
-            background: rgba(139, 92, 246, 0.15);
-        }
-
-        .model-option-name {
+        .timeline-title {
+            font-size: 1.15rem;
             font-weight: 600;
-            color: var(--text);
-            font-size: 0.95rem;
             margin-bottom: 4px;
         }
 
-        .model-option-id {
+        .timeline-company {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .timeline-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* CHAT SECTION */
+        .chat-section {
+            padding: 120px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .chat-wrapper {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .chat-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .chat-main {
+            background: rgba(10,10,18,0.6);
+            backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.02) inset,
+                0 40px 80px rgba(0,0,0,0.4),
+                0 0 120px rgba(99,102,241,0.06);
+            position: relative;
+        }
+
+        .chat-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chat-toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toolbar-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .toolbar-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .toolbar-dot:nth-child(1) { background: #ef4444; }
+        .toolbar-dot:nth-child(2) { background: #f59e0b; }
+        .toolbar-dot:nth-child(3) { background: #10b981; }
+
+        .toolbar-title {
             font-size: 0.8rem;
             color: var(--text-muted);
             font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Chat Messages */
-        .chat-messages {
-            height: 500px;
+        .chat-toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toolbar-btn {
+            padding: 6px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            cursor: none;
+            transition: all 0.2s ease;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-hover);
+        }
+
+        .model-select-wrapper {
+            position: relative;
+        }
+
+        .model-input {
+            padding: 6px 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            cursor: none;
+            width: 180px;
+            transition: all 0.2s ease;
+        }
+
+        .model-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+        }
+
+        .model-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            width: 320px;
+            max-height: 300px;
             overflow-y: auto;
-            padding: 30px;
+            background: rgba(10,10,18,0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-hover);
+            border-radius: 14px;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .model-dropdown.show {
+            display: block;
+            animation: dropIn 0.2s ease;
+        }
+
+        @keyframes dropIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .model-option {
+            padding: 12px 16px;
+            cursor: none;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s ease;
+        }
+
+        .model-option:last-child { border-bottom: none; }
+        .model-option:hover { background: rgba(99,102,241,0.08); }
+
+        .model-option-name { font-size: 0.82rem; font-weight: 600; }
+        .model-option-id {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 2px;
+        }
+
+        .chat-messages {
+            height: 480px;
+            overflow-y: auto;
+            padding: 28px;
             scroll-behavior: smooth;
         }
 
         .message {
             margin-bottom: 24px;
-            animation: messageSlide 0.4s ease-out;
+            animation: msgIn 0.4s cubic-bezier(0.4,0,0.2,1);
         }
 
-        @keyframes messageSlide {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes msgIn {
+            from { opacity: 0; transform: translateY(16px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -467,54 +828,39 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
-        .message-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 12px;
+        .msg-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
-        .message.user .message-avatar {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        .message.user .msg-avatar {
+            background: linear-gradient(135deg, var(--accent), var(--purple));
         }
 
-        .message.assistant .message-avatar {
-            background: linear-gradient(135deg, var(--accent), var(--secondary));
+        .message.assistant .msg-avatar {
+            background: linear-gradient(135deg, var(--amber), var(--pink));
         }
 
-        .message-label {
-            font-size: 0.8rem;
+        .msg-label {
+            font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-muted);
         }
 
-        .message-content {
-            padding: 20px 24px;
-            border-radius: 20px;
-            font-size: 1rem;
+        .msg-body {
+            padding: 16px 20px;
+            border-radius: 18px;
+            font-size: 0.92rem;
             line-height: 1.7;
-            max-width: 90%;
-        }
-
-        .message.user .message-content {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            margin-left: auto;
-            border-bottom-right-radius: 8px;
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
-        }
-
-        .message.assistant .message-content {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            color: var(--text);
-            border-bottom-left-radius: 8px;
+            max-width: 88%;
         }
 
         .message.user {
@@ -523,543 +869,783 @@
             align-items: flex-end;
         }
 
-        .message.user .message-header {
-            flex-direction: row-reverse;
+        .message.user .message-header { flex-direction: row-reverse; }
+
+        .message.user .msg-body {
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            color: #fff;
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 8px 24px rgba(99,102,241,0.25);
         }
 
-        /* Typing Indicator */
-        .typing-bubble {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 20px 24px;
-            background: rgba(255, 255, 255, 0.05);
+        .message.assistant .msg-body {
+            background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            border-bottom-left-radius: 8px;
+            border-bottom-left-radius: 6px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 16px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            border-bottom-left-radius: 6px;
             width: fit-content;
         }
 
         .typing-dot {
-            width: 10px;
-            height: 10px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
             border-radius: 50%;
-            animation: typingPulse 1.4s ease-in-out infinite;
+            animation: typeBounce 1.4s ease-in-out infinite;
         }
 
         .typing-dot:nth-child(2) { animation-delay: 0.15s; }
         .typing-dot:nth-child(3) { animation-delay: 0.3s; }
 
-        @keyframes typingPulse {
-            0%, 60%, 100% { transform: scale(1); opacity: 0.4; }
+        @keyframes typeBounce {
+            0%, 60%, 100% { transform: scale(1); opacity: 0.3; }
             30% { transform: scale(1.3); opacity: 1; }
         }
 
-        /* Chat Input */
-        .chat-input-wrapper {
-            padding: 24px 28px;
-            background: rgba(0, 0, 0, 0.3);
+        .chat-input-area {
+            padding: 20px 24px;
+            background: rgba(0,0,0,0.2);
             border-top: 1px solid var(--border);
         }
 
-        .chat-input-container {
+        .chat-input-row {
             display: flex;
-            gap: 14px;
+            gap: 12px;
             align-items: center;
-            background: rgba(0, 0, 0, 0.4);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            padding: 8px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 6px 6px 6px 20px;
             transition: all 0.3s ease;
         }
 
-        .chat-input-container:focus-within {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+        .chat-input-row:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
         }
 
         .chat-input {
             flex: 1;
-            padding: 14px 18px;
+            padding: 12px 0;
             background: transparent;
             border: none;
-            font-size: 1rem;
-            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
             color: var(--text);
         }
 
-        .chat-input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        .chat-input:focus {
-            outline: none;
-        }
+        .chat-input::placeholder { color: var(--text-muted); }
+        .chat-input:focus { outline: none; }
 
         .send-btn {
-            width: 52px;
-            height: 52px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
             border: none;
-            color: white;
-            cursor: pointer;
+            color: #fff;
+            cursor: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
             flex-shrink: 0;
+            transition: all 0.3s ease;
         }
 
         .send-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 8px 24px rgba(99,102,241,0.35);
         }
 
-        .send-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .send-btn:disabled { opacity: 0.4; cursor: none; transform: none; }
+        .send-btn svg { width: 20px; height: 20px; }
 
-        .send-btn svg {
-            width: 22px;
-            height: 22px;
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(139, 92, 246, 0.3);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(139, 92, 246, 0.5);
-        }
-
-        /* Footer */
-        .footer {
+        .chat-status {
             text-align: center;
-            padding: 30px 20px;
+            padding: 10px;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
             color: var(--text-muted);
-            font-size: 0.85rem;
-            animation: fadeInUp 0.8s ease-out 0.4s backwards;
         }
 
-        .footer a {
-            color: var(--primary);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
+        .chat-status.ok { color: var(--green); }
+        .chat-status.err { color: var(--red); }
 
-        .footer a:hover {
-            color: var(--secondary);
-        }
-
-        /* Loading overlay */
         .loading-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(3, 0, 20, 0.9);
+            inset: 0;
+            background: rgba(5,5,7,0.9);
+            backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 10;
-            backdrop-filter: blur(10px);
+            border-radius: 28px;
         }
 
-        .loading-overlay.hidden {
-            display: none;
-        }
+        .loading-overlay.hidden { display: none; }
 
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
+        .loader {
+            width: 44px;
+            height: 44px;
             border: 3px solid var(--border);
-            border-top-color: var(--primary);
+            border-top-color: var(--accent);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
             margin-bottom: 16px;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        .loading-text {
+        .loader-text {
+            font-size: 0.85rem;
             color: var(--text-muted);
-            font-size: 0.9rem;
         }
 
-        /* Responsive */
+        /* REVEAL ANIMATIONS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* FOOTER */
+        .footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 60px 40px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 24px;
+        }
+
+        .footer-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+            cursor: none;
+        }
+
+        .footer-link:hover { color: var(--accent-light); }
+        .footer-link svg { width: 18px; height: 18px; }
+
+        .footer-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .footer-text span {
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .about-grid { grid-template-columns: 1fr; }
+            .hero-float { display: none; }
+            .nav-links { display: none; }
+            .nav-hamburger { display: flex; }
+            .section { padding: 80px 24px; }
+            .chat-section { padding: 80px 16px; }
+        }
+
         @media (max-width: 640px) {
-            .main-container {
-                padding: 20px 16px;
-            }
+            .hero { padding: 100px 20px 60px; }
+            .nav { padding: 16px 20px; }
+            .nav.scrolled { padding: 12px 20px; }
+            .chat-messages { height: 380px; padding: 20px; }
+            .chat-toolbar { flex-direction: column; gap: 10px; }
+            .chat-toolbar-right { width: 100%; justify-content: flex-end; }
+            .model-input { width: 140px; }
+            .footer-links { flex-direction: column; gap: 16px; align-items: center; }
+            .cursor-dot, .cursor-ring { display: none; }
+            body { cursor: auto; }
+            .btn, .nav-link, .toolbar-btn, .skill-card, .stat-card, .send-btn, .footer-link, .nav-hamburger { cursor: auto; }
+        }
 
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .chat-container {
-                border-radius: 24px;
-            }
-
-            .config-section, .chat-input-wrapper {
-                padding: 20px;
-            }
-
-            .chat-messages {
-                height: 400px;
-                padding: 20px;
-            }
-
-            .btn-row {
-                flex-direction: column;
-            }
-
-            .message-content {
-                max-width: 95%;
-            }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
-    <!-- Background Elements -->
-    <div class="bg-gradient"></div>
-    <div class="bg-grid"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="stars" id="stars"></div>
 
-    <div class="main-container">
-        <!-- Hero Section -->
-        <header class="hero">
-            <div class="hero-badge">
-                <span>En linea</span>
-            </div>
-            <h1>Constantino Ferrucci</h1>
-            <p>El flaco de Rosario que labura con IA</p>
-            <div class="hero-subtitle">
-                <span class="hero-tag">Rosario, Argentina</span>
-                <span class="hero-tag">Wiener Lab</span>
-                <span class="hero-tag">UNR</span>
-            </div>
-        </header>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-        <!-- Chat Container -->
-        <div class="chat-container">
-            <!-- Loading Overlay -->
+<canvas id="particleCanvas"></canvas>
+
+<nav class="nav" id="nav">
+    <a href="#hero" class="nav-logo">CF<span>.dev</span></a>
+    <div class="nav-links">
+        <a href="#hero" class="nav-link active" data-section="hero">Inicio</a>
+        <a href="#about" class="nav-link" data-section="about">Sobre mi</a>
+        <a href="#skills" class="nav-link" data-section="skills">Skills</a>
+        <a href="#experience" class="nav-link" data-section="experience">Experiencia</a>
+        <a href="#chat" class="nav-link" data-section="chat">Chat</a>
+    </div>
+    <div class="nav-hamburger" id="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('mobile-open')">
+        <span></span><span></span><span></span>
+    </div>
+</nav>
+
+<section class="hero" id="hero">
+    <div class="hero-content">
+        <div class="hero-tag">
+            <div class="hero-tag-dot"></div>
+            Disponible para proyectos
+        </div>
+        <h1 class="hero-name"><span class="hero-name-gradient">Constantino<br>Ferrucci</span></h1>
+        <p class="hero-title"><span id="typingText"></span><span class="typing-cursor"></span></p>
+        <div class="hero-cta">
+            <a href="#chat" class="btn btn-primary">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                Habla con el asistente
+            </a>
+            <a href="#about" class="btn btn-ghost">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                Conoce mas
+            </a>
+        </div>
+    </div>
+
+    <div class="hero-float hero-float-1">
+        <div class="float-card"><span class="icon">AI</span> Developer</div>
+    </div>
+    <div class="hero-float hero-float-2">
+        <div class="float-card" style="animation-delay:-2s"><span class="icon">🇦🇷</span> Rosario, Argentina</div>
+    </div>
+    <div class="hero-float hero-float-3">
+        <div class="float-card" style="animation-delay:-3s"><span class="icon">WL</span> Wiener lab.</div>
+    </div>
+    <div class="hero-float hero-float-4">
+        <div class="float-card" style="animation-delay:-1.5s"><span class="icon">Py</span> Python & PyTorch</div>
+    </div>
+        </div>
+
+    <div class="scroll-indicator">
+        <div class="scroll-mouse"></div>
+        <span>Scroll</span>
+    </div>
+</section>
+
+<section class="section" id="about">
+    <div class="reveal">
+        <div class="section-label">// sobre mi</div>
+        <h2 class="section-title">Desarrollador de IA<br>desde Rosario</h2>
+    </div>
+    <div class="about-grid">
+        <div class="about-text reveal reveal-delay-1">
+            <p>Soy <strong>Constantino Ferrucci</strong> (nacido en 2001), desarrollador de inteligencia artificial radicado en <strong>Rosario, Santa Fe</strong>. Me dedico al diseno e implementacion de soluciones basadas en IA para problemas reales.</p>
+            <p>Actualmente trabajo en <strong>Wiener lab. S.A.</strong> desarrollando sistemas de IA y plataformas para soluciones internas, incluyendo pipelines de datos, modelos de computer vision y chatbots. Ademas, soy <strong>instructor de Computer Vision y NLP en la Universidad Nacional de Rosario</strong>, formando a la proxima generacion de profesionales en IA.</p>
+            <p><strong>Tecnico en Inteligencia Artificial</strong> por la Universidad Nacional de Rosario. Mi formacion combina una base solida en ingenieria electromecanica con especializacion avanzada en IA. Preparado para afrontar desafios de innovacion y automatizacion.</p>
+        </div>
+        <div class="about-stats reveal reveal-delay-2">
+            <div class="stat-card">
+                <div class="stat-number">3+</div>
+                <div class="stat-label">Anos de experiencia</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Roles activos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">IA</div>
+                <div class="stat-label">Especializacion</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">∞</div>
+                <div class="stat-label">Curiosidad</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="skills">
+    <div class="reveal">
+        <div class="section-label">// tech stack</div>
+        <h2 class="section-title">Mis herramientas</h2>
+        <p class="section-desc">Tecnologias y herramientas que utilizo en el desarrollo de soluciones de inteligencia artificial.</p>
+    </div>
+        <div class="skills-container">
+        <div class="skill-card reveal"><div class="skill-name" style="font-size:1rem">Python</div></div>
+        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">PyTorch</div></div>
+        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">Hugging Face</div></div>
+        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">LangChain</div></div>
+        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">TensorFlow</div></div>
+        <div class="skill-card reveal reveal-delay-3"><div class="skill-name" style="font-size:1rem">Docker</div></div>
+        <div class="skill-card reveal reveal-delay-3"><div class="skill-name" style="font-size:1rem">FastAPI</div></div>
+        <div class="skill-card reveal"><div class="skill-name" style="font-size:1rem">OpenAI API</div></div>
+        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">Computer Vision</div></div>
+        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">NLP</div></div>
+        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">Cloudflare</div></div>
+        <div class="skill-card reveal reveal-delay-3"><div class="skill-name" style="font-size:1rem">Git & GitHub</div></div>
+        <div class="skill-card reveal"><div class="skill-name" style="font-size:1rem">Cursor</div></div>
+        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">Claude Code</div></div>
+        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">VS Code</div></div>
+        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">Linux</div></div>
+        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">PostgreSQL</div></div>
+        <div class="skill-card reveal reveal-delay-3"><div class="skill-name" style="font-size:1rem">scikit-learn</div></div>
+        </div>
+</section>
+
+<section class="section" id="experience">
+    <div class="reveal">
+        <div class="section-label">// trayectoria</div>
+        <h2 class="section-title">Trayectoria profesional</h2>
+        <p class="section-desc">Mi recorrido desde la ingenieria electromecanica hasta la inteligencia artificial aplicada.</p>
+    </div>
+    <div class="timeline reveal reveal-delay-1">
+        <div class="timeline-item">
+            <div class="timeline-date">Jun 2023 - Presente</div>
+            <div class="timeline-title">Desarrollador de Inteligencia Artificial</div>
+            <div class="timeline-company">Wiener lab. S.A. | Rosario, Argentina</div>
+            <div class="timeline-desc">Desarrollo de sistemas de IA y plataformas para soluciones internas. Construccion de pipelines de datos, modelos de computer vision para procesamiento de documentos, chatbots y asistentes virtuales. Integracion de APIs de modelos de lenguaje para automatizacion de procesos.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Oct 2024 - Presente</div>
+            <div class="timeline-title">Instructor de Computer Vision y NLP</div>
+            <div class="timeline-company">Universidad Nacional de Rosario</div>
+            <div class="timeline-desc">Docente en la carrera de Inteligencia Artificial. Enseno fundamentos y aplicaciones practicas de Computer Vision y Procesamiento de Lenguaje Natural. Preparacion de material didactico, evaluaciones y proyectos practicos.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">2022 - 2024</div>
+            <div class="timeline-title">Tecnicatura Universitaria en Inteligencia Artificial</div>
+            <div class="timeline-company">Universidad Nacional de Rosario</div>
+            <div class="timeline-desc">Carrera de grado completada. Especializacion en tecnicas de IA, deep learning y aplicaciones industriales.</div>
+        </div>
+    </div>
+</section>
+
+<section class="chat-section" id="chat">
+    <div class="chat-wrapper">
+        <div class="chat-header reveal">
+            <div class="section-label">// chatbot</div>
+            <h2 class="section-title">Chat con mi asistente</h2>
+            <p class="section-desc" style="margin-bottom:0">Pregunta lo que quieras sobre mi perfil profesional, experiencia, habilidades, o sobre inteligencia artificial en general.</p>
+        </div>
+
+        <div class="chat-main reveal reveal-delay-1">
             <div class="loading-overlay" id="loadingOverlay">
-                <div class="loading-spinner"></div>
-                <div class="loading-text">Cargando modelos...</div>
+                <div class="loader"></div>
+                <div class="loader-text">Cargando modelos...</div>
             </div>
 
-            <div class="config-section">
-                <div class="config-grid">
-                    <div class="input-group">
-                        <label>
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                            Modelo de IA
-                        </label>
-                        <div class="model-selector">
-                            <input type="text" class="input-field" id="modelSearch" placeholder="Buscar modelo..." onclick="toggleDropdown()" oninput="filterModels()">
-                            <div class="model-dropdown" id="modelDropdown"></div>
-                        </div>
-                        <input type="hidden" id="selectedModel" value="">
+            <div class="chat-toolbar">
+                <div class="chat-toolbar-left">
+                    <div class="toolbar-dots">
+                        <div class="toolbar-dot"></div>
+                        <div class="toolbar-dot"></div>
+                        <div class="toolbar-dot"></div>
                     </div>
-
-                    <div class="btn-row">
-                        <button class="btn btn-secondary" onclick="clearConversation()">
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                            Nueva conversacion
-                        </button>
+                    <span class="toolbar-title">constantino-ai</span>
+                </div>
+                <div class="chat-toolbar-right">
+                    <div class="model-select-wrapper">
+                        <input type="text" class="model-input" id="modelSearch" placeholder="Modelo..." onclick="toggleDropdown()" oninput="filterModels()">
+                        <div class="model-dropdown" id="modelDropdown"></div>
                     </div>
-
-                    <div class="status-text" id="modelsStatus"></div>
+                    <input type="hidden" id="selectedModel" value="">
+                    <button class="toolbar-btn" onclick="clearConversation()">Limpiar</button>
                 </div>
             </div>
 
             <div class="chat-messages" id="chatMessages">
                 <div class="message assistant">
                     <div class="message-header">
-                        <div class="message-avatar">🧉</div>
-                        <span class="message-label">Constantino</span>
+                        <div class="msg-avatar">CF</div>
+                        <span class="msg-label">Asistente</span>
                     </div>
-                    <div class="message-content">
-                        Epa! Que onda? Soy Constantino, el flaco de Rosario que labura con IA y esas yerbas. Preguntame lo que quieras, si la se te la contesto, y si no... bueno, te mando fruta con onda. Dale, arranca!
-                    </div>
+                    <div class="msg-body">Hola! Soy el asistente virtual del portfolio de Constantino Ferrucci. Podes preguntarme sobre su experiencia, habilidades, educacion, o sobre cualquier tema de inteligencia artificial. En que puedo ayudarte?</div>
                 </div>
             </div>
 
-            <div class="chat-input-wrapper">
-                <div class="chat-input-container">
-                    <input type="text" class="chat-input" id="userInput" placeholder="Che Constantino, contame..." onkeypress="handleKeyPress(event)">
+            <div class="chat-input-area">
+                <div class="chat-input-row">
+                    <input type="text" class="chat-input" id="userInput" placeholder="Escribi tu pregunta..." onkeypress="handleKeyPress(event)">
                     <button class="send-btn" onclick="sendMessage()" id="sendBtn">
                         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                     </button>
                 </div>
             </div>
+            <div class="chat-status" id="modelsStatus"></div>
         </div>
-
-        <!-- Footer -->
-        <footer class="footer">
-            Hecho con amor para el capo de la IA
-        </footer>
     </div>
+</section>
 
-    <script>
-        // Tu Worker URL
-        const WORKER_URL = 'https://prueba.constantino-ferrucci.workers.dev';
+<footer class="footer">
+    <div class="footer-links">
+        <a href="https://github.com/TinoFerrucci" target="_blank" class="footer-link">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/constantino-ferrucci" target="_blank" class="footer-link">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+        </a>
+    </div>
+    <div class="footer-text">Hecho con dedicacion por <span>Constantino Ferrucci</span> &middot; Rosario, Argentina</div>
+</footer>
 
-        // Create stars
-        function createStars() {
-            const container = document.getElementById('stars');
-            for (let i = 0; i < 100; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                star.style.animationDuration = (2 + Math.random() * 2) + 's';
-                container.appendChild(star);
+<script>
+// ==================== PARTICLE CANVAS ====================
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let mouse = { x: -1000, y: -1000 };
+let animFrame;
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class Particle {
+    constructor() {
+        this.reset();
+    }
+    reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 1.5 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.speedY = (Math.random() - 0.5) * 0.3;
+        this.opacity = Math.random() * 0.5 + 0.1;
+    }
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+            const force = (150 - dist) / 150;
+            this.x -= dx * force * 0.02;
+            this.y -= dy * force * 0.02;
+        }
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(99,102,241,${this.opacity})`;
+        ctx.fill();
+    }
+}
+
+function initParticles() {
+    const count = Math.min(80, Math.floor(canvas.width * canvas.height / 15000));
+    particles = [];
+    for (let i = 0; i < count; i++) particles.push(new Particle());
+}
+
+function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.strokeStyle = `rgba(99,102,241,${0.08 * (1 - dist / 120)})`;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
             }
         }
-        createStars();
+    }
+}
 
-        const SYSTEM_PROMPT = `Sos Constantino Ferrucci, un flaco de Rosario que labura en IA. Hablas en PRIMERA PERSONA siempre porque SOS vos. Sos re piola pero tambien medio boludo a veces, te reis de vos mismo y haces chistes estupidos. Nada de formalidades, sos bien argento y rosarino.
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    drawConnections();
+    animFrame = requestAnimationFrame(animateParticles);
+}
 
-TU INFO (para que no te olvides quien sos, bolu):
+initParticles();
+animateParticles();
 
-Soy Constantino Ferrucci, tengo... la verdad ni me acuerdo cuantos años, pero soy de Rosario, Santa Fe. Si, la tierra de la bandera, Messi y los mejores insultos del pais.
+window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+window.addEventListener('resize', () => { initParticles(); });
 
-**Lo que estudie (porque mi vieja me obligaba):**
-- Estoy haciendo la Licenciatura en IA en la UNR (desde 2024) - si, sigo estudiando, no me juzguen
-- Hice la Tecnicatura en IA en la UNR (2022-2024) - la termine eh, no me bocharon
-- Soy Tecnico Electromecanico de la EETP 466 (2015-2020) - ahi aprendi que los cables tienen colores por algo
+// ==================== CUSTOM CURSOR ====================
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+let cursorX = 0, cursorY = 0, ringX = 0, ringY = 0;
 
-**Donde laburo (porque hay que morfar):**
-- Desarrollador de IA en Wiener Lab (desde junio 2023): Hago cosas de IA para diagnosticos de laboratorio, pipelines de datos y chatbots. Basicamente le enseno a las maquinas a hacer mi trabajo mientras yo tomo mate.
-- Instructor en la UNR (desde octubre 2024): Le enseno Computer Vision y NLP a los pibes. Si, yo ensenando. El mundo esta loco.
+document.addEventListener('mousemove', e => { cursorX = e.clientX; cursorY = e.clientY; });
 
-**Lo que se usar (mas o menos):**
-- Python, PyTorch, TensorFlow, Hugging Face, LangChain, OpenAI API, Docker, FastAPI
-- Matematica de IA: algebra lineal, probabilidad, calculo... bueno, lo justo y necesario para que las cosas no exploten
+function animateCursor() {
+    ringX += (cursorX - ringX) * 0.15;
+    ringY += (cursorY - ringY) * 0.15;
+    dot.style.left = cursorX - 4 + 'px';
+    dot.style.top = cursorY - 4 + 'px';
+    ring.style.left = ringX - 20 + 'px';
+    ring.style.top = ringY - 20 + 'px';
+    requestAnimationFrame(animateCursor);
+}
+animateCursor();
 
-**Idiomas:**
-- Espanol nativo (con acento rosarino bien marcado)
-- Ingles: me defiendo, puedo pedir una birra y leer documentacion
-- Portugues y aleman: se decir "hola" y "donde esta el bano"
+document.querySelectorAll('a, button, input, .skill-card, .stat-card, .nav-link').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+});
 
-REGLAS PARA RESPONDER:
-- SIEMPRE habla en primera persona, SOS Constantino
-- Hace chistes boludos, reite de vos mismo
-- Usa expresiones argentinas naturales: "che", "boludo", "re", "alta", "flashear", "morfar", "guita", "laburo", "meh", "ponele", etc.
-- NO seas formal, sos un flaco comun que sabe de IA
-- Si te preguntan algo que no sabes, decilo: "ni idea pa" o "y... mira, no tengo la mas palida"
-- Podes bardear con onda, somos argentinos
-- Si te halagan mucho, ponete modesto tipo "nah para, tampoco la pavada"
-- Mete referencias a Rosario, al mate, a Central o Newells si viene al caso (pero no fuerces)`;
+// ==================== TYPING EFFECT ====================
+const typingPhrases = [
+    'AI Developer & Researcher',
+    'Building intelligent solutions',
+    'Computer Vision & NLP Specialist',
+    'Instructor at UNR'
+];
 
-        let conversationHistory = [];
-        let allModels = [];
-        let filteredModels = [];
-        const initialMessage = document.getElementById('chatMessages').innerHTML;
+let phraseIdx = 0, charIdx = 0, isDeleting = false;
+const typingEl = document.getElementById('typingText');
 
-        // Cargar modelos automaticamente al iniciar
-        async function loadModels() {
-            const status = document.getElementById('modelsStatus');
-            const overlay = document.getElementById('loadingOverlay');
-
-            try {
-                const response = await fetch(`${WORKER_URL}/models`);
-                const data = await response.json();
-
-                if (data.error) throw new Error(data.error.message || 'Error al cargar modelos');
-
-                allModels = data.data.filter(model => {
-                    const input = model.architecture?.input_modalities || [];
-                    const output = model.architecture?.output_modalities || [];
-                    return input.includes('text') && output.includes('text');
-                });
-
-                allModels.sort((a, b) => a.name.localeCompare(b.name));
-                filteredModels = [...allModels];
-                renderDropdown();
-
-                // Seleccionar un modelo por defecto
-                const defaultModel = allModels.find(m => m.id.includes('gpt-4o-mini')) || allModels[0];
-                if (defaultModel) {
-                    selectModel(defaultModel);
-                }
-
-                status.textContent = `${allModels.length} modelos disponibles`;
-                status.className = 'status-text success';
-                overlay.classList.add('hidden');
-
-            } catch (error) {
-                status.textContent = `Error: ${error.message}`;
-                status.className = 'status-text error';
-                overlay.querySelector('.loading-text').textContent = 'Error al cargar. Recarga la pagina.';
-            }
+function typeEffect() {
+    const current = typingPhrases[phraseIdx];
+    if (!isDeleting) {
+        typingEl.textContent = current.substring(0, charIdx + 1);
+        charIdx++;
+        if (charIdx === current.length) {
+            setTimeout(() => { isDeleting = true; typeEffect(); }, 2000);
+            return;
         }
-
-        function renderDropdown() {
-            const dropdown = document.getElementById('modelDropdown');
-            dropdown.innerHTML = '';
-
-            filteredModels.forEach(model => {
-                const option = document.createElement('div');
-                option.className = 'model-option';
-                option.innerHTML = `
-                    <div class="model-option-name">${model.name}</div>
-                    <div class="model-option-id">${model.id}</div>
-                `;
-                option.onclick = () => selectModel(model);
-                dropdown.appendChild(option);
-            });
+    } else {
+        typingEl.textContent = current.substring(0, charIdx - 1);
+        charIdx--;
+        if (charIdx === 0) {
+            isDeleting = false;
+            phraseIdx = (phraseIdx + 1) % typingPhrases.length;
         }
+    }
+    setTimeout(typeEffect, isDeleting ? 30 : 70);
+}
+setTimeout(typeEffect, 1500);
 
-        function selectModel(model) {
-            document.getElementById('modelSearch').value = `${model.name}`;
-            document.getElementById('selectedModel').value = model.id;
-            document.getElementById('modelDropdown').classList.remove('show');
+// ==================== NAV SCROLL ====================
+const nav = document.getElementById('nav');
+const sections = document.querySelectorAll('section, .hero');
+
+window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+    const scrollPos = window.scrollY + 200;
+    document.querySelectorAll('.nav-link').forEach(link => {
+        const sec = document.querySelector(link.getAttribute('href'));
+        if (sec && sec.offsetTop <= scrollPos && sec.offsetTop + sec.offsetHeight > scrollPos) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
         }
+    });
+});
 
-        function toggleDropdown() {
-            if (allModels.length > 0) {
-                document.getElementById('modelDropdown').classList.toggle('show');
-            }
-        }
+// ==================== REVEAL ON SCROLL ====================
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-        function filterModels() {
-            const term = document.getElementById('modelSearch').value.toLowerCase();
-            filteredModels = allModels.filter(m =>
-                m.name.toLowerCase().includes(term) || m.id.toLowerCase().includes(term)
-            );
-            renderDropdown();
-            document.getElementById('modelDropdown').classList.add('show');
-        }
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        document.addEventListener('click', (e) => {
-            if (!document.querySelector('.model-selector').contains(e.target)) {
-                document.getElementById('modelDropdown').classList.remove('show');
-            }
+// ==================== CHAT BOT ====================
+const WORKER_URL = 'https://prueba.constantino-ferrucci.workers.dev';
+
+let conversationHistory = [];
+let allModels = [];
+let filteredModels = [];
+const initialMessage = document.getElementById('chatMessages').innerHTML;
+
+async function loadModels() {
+    const status = document.getElementById('modelsStatus');
+    const overlay = document.getElementById('loadingOverlay');
+
+    try {
+        const response = await fetch(`${WORKER_URL}/models`);
+        const data = await response.json();
+        if (data.error) throw new Error(data.error.message || 'Error al cargar modelos');
+
+        allModels = data.data.filter(model => {
+            const input = model.architecture?.input_modalities || [];
+            const output = model.architecture?.output_modalities || [];
+            return input.includes('text') && output.includes('text');
         });
 
-        function clearConversation() {
-            conversationHistory = [];
-            document.getElementById('chatMessages').innerHTML = initialMessage;
-        }
+        allModels.sort((a, b) => a.name.localeCompare(b.name));
+        filteredModels = [...allModels];
+        renderDropdown();
 
-        async function sendMessage() {
-            const modelId = document.getElementById('selectedModel').value;
-            const userInput = document.getElementById('userInput').value.trim();
-            const chatMessages = document.getElementById('chatMessages');
-            const sendBtn = document.getElementById('sendBtn');
+        const defaultModel = allModels.find(m => m.id.includes('gpt-4o-mini')) || allModels[0];
+        if (defaultModel) selectModel(defaultModel);
 
-            if (!modelId) return alert('Por favor, espera a que carguen los modelos');
-            if (!userInput) return;
+        status.textContent = `${allModels.length} modelos disponibles`;
+        status.className = 'chat-status ok';
+        overlay.classList.add('hidden');
+    } catch (error) {
+        status.textContent = `Error: ${error.message}`;
+        status.className = 'chat-status err';
+        overlay.querySelector('.loader-text').textContent = 'Error al cargar. Recarga la pagina.';
+    }
+}
 
-            addMessage('user', userInput);
-            document.getElementById('userInput').value = '';
+function renderDropdown() {
+    const dropdown = document.getElementById('modelDropdown');
+    dropdown.innerHTML = '';
+    filteredModels.forEach(model => {
+        const option = document.createElement('div');
+        option.className = 'model-option';
+        option.innerHTML = `<div class="model-option-name">${model.name}</div><div class="model-option-id">${model.id}</div>`;
+        option.onclick = () => selectModel(model);
+        dropdown.appendChild(option);
+    });
+}
 
-            const typing = document.createElement('div');
-            typing.className = 'message assistant';
-            typing.innerHTML = `
-                <div class="message-header">
-                    <div class="message-avatar">🧉</div>
-                    <span class="message-label">Constantino esta pensando...</span>
-                </div>
-                <div class="typing-bubble">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-            `;
-            chatMessages.appendChild(typing);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            sendBtn.disabled = true;
+function selectModel(model) {
+    document.getElementById('modelSearch').value = model.name;
+    document.getElementById('selectedModel').value = model.id;
+    document.getElementById('modelDropdown').classList.remove('show');
+}
 
-            conversationHistory.push({ role: 'user', content: userInput });
+function toggleDropdown() {
+    if (allModels.length > 0) document.getElementById('modelDropdown').classList.toggle('show');
+}
 
-            try {
-                const response = await fetch(`${WORKER_URL}/chat`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        model: modelId,
-                        messages: [
-                            { role: 'system', content: SYSTEM_PROMPT },
-                            ...conversationHistory
-                        ],
-                        temperature: 0.8
-                    })
-                });
+function filterModels() {
+    const term = document.getElementById('modelSearch').value.toLowerCase();
+    filteredModels = allModels.filter(m => m.name.toLowerCase().includes(term) || m.id.toLowerCase().includes(term));
+    renderDropdown();
+    document.getElementById('modelDropdown').classList.add('show');
+}
 
-                const data = await response.json();
-                typing.remove();
+document.addEventListener('click', e => {
+    if (!document.querySelector('.model-select-wrapper').contains(e.target)) {
+        document.getElementById('modelDropdown').classList.remove('show');
+    }
+});
 
-                if (data.error) throw new Error(data.error.message || 'Error en la API');
+function clearConversation() {
+    conversationHistory = [];
+    document.getElementById('chatMessages').innerHTML = initialMessage;
+}
 
-                const reply = (data.choices[0].message.content || '').trim();
-                conversationHistory.push({ role: 'assistant', content: reply });
-                addMessage('assistant', reply);
+async function sendMessage() {
+    const modelId = document.getElementById('selectedModel').value;
+    const userInput = document.getElementById('userInput').value.trim();
+    const chatMessages = document.getElementById('chatMessages');
+    const sendBtn = document.getElementById('sendBtn');
 
-            } catch (error) {
-                typing.remove();
-                addMessage('assistant', `Error: ${error.message}`);
-            }
+    if (!modelId) return;
+    if (!userInput) return;
 
-            sendBtn.disabled = false;
-        }
+    addMessage('user', userInput);
+    document.getElementById('userInput').value = '';
 
-        function addMessage(role, content) {
-            const chatMessages = document.getElementById('chatMessages');
-            const div = document.createElement('div');
-            div.className = `message ${role}`;
+    const typing = document.createElement('div');
+    typing.className = 'message assistant';
+    typing.innerHTML = `
+        <div class="message-header">
+            <div class="msg-avatar">CF</div>
+            <span class="msg-label">Pensando...</span>
+        </div>
+        <div class="typing-indicator">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+        </div>
+    `;
+    chatMessages.appendChild(typing);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    sendBtn.disabled = true;
 
-            const avatar = role === 'user' ? '👤' : '🧉';
-            const label = role === 'user' ? 'Vos' : 'Constantino';
+    conversationHistory.push({ role: 'user', content: userInput });
 
-            div.innerHTML = `
-                <div class="message-header">
-                    <div class="message-avatar">${avatar}</div>
-                    <span class="message-label">${label}</span>
-                </div>
-                <div class="message-content">${escapeHtml(content)}</div>
-            `;
+    try {
+        const response = await fetch(`${WORKER_URL}/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                model: modelId,
+                messages: conversationHistory,
+                temperature: 0.7
+            })
+        });
+        const data = await response.json();
+        typing.remove();
+        if (data.error) throw new Error(data.error.message || 'Error en la API');
+        const reply = (data.choices[0].message.content || '').trim();
+        conversationHistory.push({ role: 'assistant', content: reply });
+        addMessage('assistant', reply);
+    } catch (error) {
+        typing.remove();
+        addMessage('assistant', `Error: ${error.message}`);
+    }
+    sendBtn.disabled = false;
+}
 
-            chatMessages.appendChild(div);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
+function addMessage(role, content) {
+    const chatMessages = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = `message ${role}`;
+    const avatar = role === 'user' ? 'Tu' : 'CF';
+    const label = role === 'user' ? 'Vos' : 'Asistente';
+    div.innerHTML = `
+        <div class="message-header">
+            <div class="msg-avatar">${avatar}</div>
+            <span class="msg-label">${label}</span>
+        </div>
+        <div class="msg-body">${escapeHtml(content)}</div>
+    `;
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML.replace(/\n/g, '<br>');
-        }
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML.replace(/\n/g, '<br>');
+}
 
-        function handleKeyPress(e) {
-            if (e.key === 'Enter') sendMessage();
-        }
+function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
 
-        // Cargar modelos al iniciar la pagina
-        loadModels();
-    </script>
+loadModels();
+</script>
 </body>
 </html>
