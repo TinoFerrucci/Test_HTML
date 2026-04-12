@@ -32,6 +32,7 @@ INFORMACION PERSONAL DE CONSTANTINO FERRUCCI:
 **Email de contacto:** constantinoferrucci@gmail.com
 **LinkedIn:** https://www.linkedin.com/in/constantino-ferrucci/
 **GitHub:** https://github.com/TinoFerrucci
+**Certificados:** https://drive.google.com/drive/u/0/folders/1YwboIcH7tJH8fsHGWpWwGgp2NK3AIGGf
 **Sitio web:** constantinoferrucci.com.ar
 **Estado actual:** Preparado para afrontar desafios de innovacion y automatizacion.
 **Hincha de:** San Lorenzo de Almagro
