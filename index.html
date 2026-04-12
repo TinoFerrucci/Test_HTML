@@ -1125,6 +1125,140 @@
         .reveal-delay-2 { transition-delay: 0.2s; }
         .reveal-delay-3 { transition-delay: 0.3s; }
 
+        /* PROJECTS */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+            cursor: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(99,102,241,0.04));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover::before { opacity: 1; }
+
+        .project-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .project-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .project-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .project-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            margin-left: 12px;
+        }
+
+        .project-link:hover {
+            border-color: var(--accent);
+            color: var(--accent-light);
+            background: rgba(99,102,241,0.08);
+        }
+
+        .project-link svg { width: 16px; height: 16px; }
+
+        .project-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .project-tag {
+            padding: 4px 10px;
+            background: rgba(99,102,241,0.08);
+            border: 1px solid rgba(99,102,241,0.15);
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--accent-light);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .project-card.featured {
+            grid-column: 1 / -1;
+        }
+
+        .project-card.featured .project-title {
+            font-size: 1.15rem;
+        }
+
+        .project-highlights {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 16px;
+        }
+
+        .project-highlights li {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            padding-left: 16px;
+            position: relative;
+            margin-bottom: 4px;
+        }
+
+        .project-highlights li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 9px;
+            width: 5px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        @media (max-width: 640px) {
+            .projects-grid { grid-template-columns: 1fr; }
+            .project-card { cursor: auto; }
+        }
+
         /* FOOTER */
         .footer {
             position: relative;
@@ -1211,6 +1345,7 @@
         <a href="#about" class="nav-link" data-section="about">Sobre mi</a>
         <a href="#skills" class="nav-link" data-section="skills">Skills</a>
         <a href="#experience" class="nav-link" data-section="experience">Experiencia</a>
+        <a href="#projects" class="nav-link" data-section="projects">Proyectos</a>
         <a href="#chat" class="nav-link" data-section="chat">Chat</a>
     </div>
     <div class="nav-hamburger" id="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('mobile-open')">
@@ -1342,6 +1477,104 @@
             <div class="timeline-title">Tecnicatura Universitaria en Inteligencia Artificial</div>
             <div class="timeline-company">Universidad Nacional de Rosario</div>
             <div class="timeline-desc">Carrera de grado completada. Especializacion en tecnicas de IA, deep learning y aplicaciones industriales.</div>
+        </div>
+    </div>
+ </section>
+
+<section class="section" id="projects">
+    <div class="reveal">
+        <div class="section-label">// proyectos</div>
+        <h2 class="section-title">Proyectos destacados</h2>
+        <p class="section-desc">Desarrollos que reflejan mi experiencia integrando IA, datos y software.</p>
+    </div>
+    <div class="projects-grid">
+        <div class="project-card featured reveal">
+            <div class="project-header">
+                <div class="project-title">Datagentra - Analista de Datos Autonomo</div>
+                <a href="https://github.com/TinoFerrucci/Datagentra" target="_blank" class="project-link">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+            </div>
+            <ul class="project-highlights">
+                <li>Pipeline de Text-to-SQL con agente autonomo de 5 pasos: generacion de SQL, ejecucion con reintentos, resumen, sugerencia de grafico y serializacion</li>
+                <li>Integracion con LangChain compatible con OpenAI (cloud) y Ollama (local)</li>
+                <li>API REST con FastAPI, validacion con Pydantic y manejo de errores con reintentos inteligentes</li>
+                <li>Frontend React + TypeScript con graficos dinamicos, tema claro/oscuro y Tailwind CSS</li>
+                <li>Motor de solo lectura con bloqueo de operaciones peligrosas (INSERT, UPDATE, DELETE, DROP)</li>
+                <li>Despliegue con Docker Compose: orquestacion de 3 servicios con health checks</li>
+            </ul>
+            <div class="project-tags">
+                <span class="project-tag">Python</span>
+                <span class="project-tag">FastAPI</span>
+                <span class="project-tag">React</span>
+                <span class="project-tag">TypeScript</span>
+                <span class="project-tag">LangChain</span>
+                <span class="project-tag">Docker</span>
+                <span class="project-tag">SQLite</span>
+                <span class="project-tag">OpenAI</span>
+                <span class="project-tag">Ollama</span>
+            </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-1">
+            <div class="project-header">
+                <div class="project-title">Asistente Inteligente basado en Videojuegos</div>
+                <a href="https://github.com/TinoFerrucci/NLP_Final_Project" target="_blank" class="project-link">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+            </div>
+            <ul class="project-highlights">
+                <li>Busqueda semantica con vectores de altas dimensiones y ChromaDB</li>
+                <li>Scraping HTML y API REST para obtencion de datos</li>
+                <li>Generacion de texto con modelos open-source para dialogos contextuales</li>
+                <li>Investigacion sobre agentes inteligentes autonomos</li>
+            </ul>
+            <div class="project-tags">
+                <span class="project-tag">NLP</span>
+                <span class="project-tag">ChromaDB</span>
+                <span class="project-tag">Embeddings</span>
+                <span class="project-tag">Python</span>
+                <span class="project-tag">RAG</span>
+            </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-2">
+            <div class="project-header">
+                <div class="project-title">Prediccion de Lluvia en Australia</div>
+                <a href="https://github.com/Shannon-21/Aprendizaje_Automatico_1" target="_blank" class="project-link">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+            </div>
+            <ul class="project-highlights">
+                <li>Modelos de regresion y clasificacion para predecir probabilidad y cantidad de lluvia</li>
+                <li>Redes neuronales y optimizacion de hiperparametros</li>
+                <li>Explicabilidad con SHAP para interpretar las predicciones</li>
+                <li>Despliegue interactivo con Streamlit</li>
+            </ul>
+            <div class="project-tags">
+                <span class="project-tag">scikit-learn</span>
+                <span class="project-tag">Redes Neuronales</span>
+                <span class="project-tag">SHAP</span>
+                <span class="project-tag">Streamlit</span>
+                <span class="project-tag">Python</span>
+            </div>
+        </div>
+
+        <div class="project-card featured reveal reveal-delay-1">
+            <div class="project-header">
+                <div class="project-title">Otros proyectos</div>
+            </div>
+            <div class="project-tags" style="gap: 8px; line-height: 1.6;">
+                <a href="https://github.com/Shannon-21/TP_Procesamiento_Imagenes" target="_blank" class="project-tag" style="text-decoration:none">Procesamiento de imagenes</a>
+                <a href="https://github.com/Shannon-21/NLP_TP1" target="_blank" class="project-tag" style="text-decoration:none">Bot de Telegram de noticias</a>
+                <a href="https://github.com/AlexLopezz/JAVA-Proyecto_Pronosticos-Deportivos" target="_blank" class="project-tag" style="text-decoration:none">Pronosticos deportivos (Java)</a>
+                <a href="https://github.com/TinoFerrucci/sqlalchemy_with_fastapi" target="_blank" class="project-tag" style="text-decoration:none">SQLAlchemy + FastAPI</a>
+                <a href="https://github.com/Shannon-21/TUIA_BD_TP1" target="_blank" class="project-tag" style="text-decoration:none">Base de datos de un cine (SQL)</a>
+                <a href="https://github.com/Simon890/estadistica_tp1" target="_blank" class="project-tag" style="text-decoration:none">Analisis estadistico (R)</a>
+                <a href="https://github.com/TinoFerrucci/tp-entorno" target="_blank" class="project-tag" style="text-decoration:none">Bash scripting</a>
+                <a href="https://github.com/TinoFerrucci/CRUDProgram" target="_blank" class="project-tag" style="text-decoration:none">CRUD de Recetas</a>
+                <a href="https://github.com/TinoFerrucci/PythonGames" target="_blank" class="project-tag" style="text-decoration:none">Juegos basicos (Python)</a>
+            </div>
         </div>
     </div>
 </section>
