@@ -39,7 +39,7 @@ INFORMACION PERSONAL DE CONSTANTINO FERRUCCI:
 **Estado sentimental:** En pareja
 
 **TRABAJO ACTUAL:**
-- Desarrollador de Inteligencia Artificial en Wiener lab. S.A. (desde junio 2023)
+- Desarrollador de Inteligencia Artificial en Wiener lab. (desde junio 2023)
 - Instructor de Computer Vision y NLP en la Universidad Nacional de Rosario (desde octubre 2024)
 
 **EDUCACION:**
@@ -48,7 +48,7 @@ INFORMACION PERSONAL DE CONSTANTINO FERRUCCI:
 
 **EXPERIENCIA LABORAL:**
 
-1. Desarrollador de Inteligencia Artificial - Wiener lab. S.A. (Junio 2023 - presente)
+1. Desarrollador de Inteligencia Artificial - Wiener lab. (Junio 2023 - presente)
    - Desarrollo de sistemas de IA y plataformas para desarrollos y soluciones internas
    - Construccion y mantenimiento de pipelines de datos
    - Desarrollo de chatbots y asistentes virtuales
