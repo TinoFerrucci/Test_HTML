@@ -808,6 +808,25 @@
             margin-top: 2px;
         }
 
+        .model-group-header {
+            padding: 10px 16px 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent-light);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(99,102,241,0.06);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .model-group + .model-group .model-group-header {
+            margin-top: 4px;
+        }
+
         .chat-messages {
             height: 480px;
             overflow-y: auto;
@@ -1604,11 +1623,11 @@
                 </div>
                 <div class="chat-toolbar-right">
                     <div class="model-select-wrapper">
-                        <input type="text" class="model-input" id="modelSearch" placeholder="Modelo..." onclick="toggleDropdown()" oninput="filterModels()">
+                        <input type="text" class="model-input" id="modelSearch" placeholder="Elegir modelo..." onclick="toggleDropdown()" readonly>
                         <div class="model-dropdown" id="modelDropdown"></div>
                     </div>
                     <input type="hidden" id="selectedModel" value="">
-                    <button class="toolbar-btn" onclick="clearConversation()">Limpiar</button>
+                    <button class="toolbar-btn" onclick="clearConversation()">Limpiar chat</button>
                 </div>
             </div>
 
@@ -1859,17 +1878,42 @@ async function loadModels() {
 function renderDropdown() {
     const dropdown = document.getElementById('modelDropdown');
     dropdown.innerHTML = '';
+
+    const grouped = {};
     filteredModels.forEach(model => {
-        const option = document.createElement('div');
-        option.className = 'model-option';
-        option.innerHTML = `<div class="model-option-name">${model.name}</div><div class="model-option-id">${model.id}</div>`;
-        option.onclick = () => selectModel(model);
-        dropdown.appendChild(option);
+        const parts = model.id.split('/');
+        const provider = parts.length > 1 ? parts[0] : 'other';
+        const modelId = parts.length > 1 ? parts.slice(1).join('/') : model.id;
+        if (!grouped[provider]) grouped[provider] = [];
+        grouped[provider].push({ ...model, provider, modelName: modelId });
+    });
+
+    const sortedProviders = Object.keys(grouped).sort();
+
+    sortedProviders.forEach(provider => {
+        const group = document.createElement('div');
+        group.className = 'model-group';
+
+        const header = document.createElement('div');
+        header.className = 'model-group-header';
+        header.textContent = provider;
+        group.appendChild(header);
+
+        grouped[provider].forEach(model => {
+            const option = document.createElement('div');
+            option.className = 'model-option';
+            option.innerHTML = `<div class="model-option-name">${model.name}</div><div class="model-option-id">${model.modelName}</div>`;
+            option.onclick = (e) => { e.stopPropagation(); selectModel(model); };
+            group.appendChild(option);
+        });
+
+        dropdown.appendChild(group);
     });
 }
 
 function selectModel(model) {
-    document.getElementById('modelSearch').value = model.name;
+    const display = `${model.provider} / ${model.name}`;
+    document.getElementById('modelSearch').value = display;
     document.getElementById('selectedModel').value = model.id;
     document.getElementById('modelDropdown').classList.remove('show');
 }
@@ -1880,9 +1924,24 @@ function toggleDropdown() {
 
 function filterModels() {
     const term = document.getElementById('modelSearch').value.toLowerCase();
-    filteredModels = allModels.filter(m => m.name.toLowerCase().includes(term) || m.id.toLowerCase().includes(term));
+    filteredModels = allModels.filter(m =>
+        m.name.toLowerCase().includes(term) || m.id.toLowerCase().includes(term)
+    );
     renderDropdown();
     document.getElementById('modelDropdown').classList.add('show');
+}
+
+function toggleDropdown() {
+    if (allModels.length > 0) {
+        const dd = document.getElementById('modelDropdown');
+        if (dd.classList.contains('show')) {
+            dd.classList.remove('show');
+        } else {
+            filteredModels = [...allModels];
+            renderDropdown();
+            dd.classList.add('show');
+        }
+    }
 }
 
 document.addEventListener('click', e => {
