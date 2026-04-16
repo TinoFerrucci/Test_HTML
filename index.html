@@ -37,55 +37,20 @@
 
         html {
             scroll-behavior: smooth;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent) transparent;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.5); }
+        ::-webkit-scrollbar { display: none; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
             color: var(--text);
             overflow-x: hidden;
-            cursor: none;
         }
 
         a { color: inherit; text-decoration: none; }
-
-        /* CUSTOM CURSOR */
-        .cursor-dot {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10000;
-            transition: transform 0.1s ease;
-            mix-blend-mode: screen;
-        }
-
-        .cursor-ring {
-            position: fixed;
-            width: 40px;
-            height: 40px;
-            border: 1.5px solid rgba(99,102,241,0.5);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10000;
-            transition: all 0.15s ease;
-        }
-
-        .cursor-ring.hover {
-            width: 60px;
-            height: 60px;
-            border-color: var(--accent);
-            background: rgba(99,102,241,0.05);
-        }
 
         /* CANVAS BG */
         #particleCanvas {
@@ -127,7 +92,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            cursor: none;
+
         }
 
         .nav-logo span {
@@ -146,7 +111,7 @@
             color: var(--text-secondary);
             border-radius: 10px;
             transition: all 0.3s ease;
-            cursor: none;
+
             position: relative;
         }
 
@@ -164,7 +129,7 @@
             display: none;
             flex-direction: column;
             gap: 5px;
-            cursor: none;
+
             padding: 8px;
         }
 
@@ -292,7 +257,7 @@
             font-size: 0.9rem;
             font-weight: 600;
             font-family: 'Inter', sans-serif;
-            cursor: none;
+
             transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
             position: relative;
             overflow: hidden;
@@ -396,54 +361,6 @@
 
         .float-card .icon { font-size: 1.3rem; }
 
-        /* SCROLL INDICATOR */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            opacity: 0;
-            animation: fadeUp 0.8s ease forwards 2s;
-        }
-
-        .scroll-indicator span {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            font-weight: 500;
-        }
-
-        .scroll-mouse {
-            width: 24px;
-            height: 38px;
-            border: 2px solid var(--text-muted);
-            border-radius: 12px;
-            position: relative;
-        }
-
-        .scroll-mouse::after {
-            content: '';
-            position: absolute;
-            top: 6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 3px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 2px;
-            animation: scrollDown 2s ease-in-out infinite;
-        }
-
-        @keyframes scrollDown {
-            0% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(14px); }
-        }
-
         /* SECTIONS */
         .section {
             position: relative;
@@ -517,7 +434,7 @@
             padding: 24px;
             text-align: center;
             transition: all 0.3s ease;
-            cursor: none;
+
         }
 
         .stat-card:hover {
@@ -556,7 +473,6 @@
             padding: 24px 20px;
             text-align: center;
             transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
-            cursor: none;
             position: relative;
             overflow: hidden;
         }
@@ -564,8 +480,11 @@
         .skill-card::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, transparent, rgba(99,102,241,0.05));
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--purple));
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -573,9 +492,9 @@
         .skill-card:hover::before { opacity: 1; }
 
         .skill-card:hover {
-            border-color: var(--accent);
+            border-color: var(--border-hover);
             transform: translateY(-6px);
-            box-shadow: 0 20px 40px rgba(99,102,241,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
 
         .skill-name {
@@ -654,7 +573,7 @@
 
         /* CHAT SECTION */
         .chat-section {
-            padding: 120px 20px;
+            padding: 100px 20px 60px;
             position: relative;
             z-index: 1;
         }
@@ -680,6 +599,14 @@
                 0 40px 80px rgba(0,0,0,0.4),
                 0 0 120px rgba(99,102,241,0.06);
             position: relative;
+            transition: box-shadow 0.5s ease;
+        }
+
+        .chat-main:hover {
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.03) inset,
+                0 40px 80px rgba(0,0,0,0.5),
+                0 0 160px rgba(99,102,241,0.1);
         }
 
         .chat-toolbar {
@@ -732,7 +659,7 @@
             font-size: 0.75rem;
             color: var(--text-secondary);
             font-family: 'Inter', sans-serif;
-            cursor: none;
+
             transition: all 0.2s ease;
         }
 
@@ -742,8 +669,42 @@
         }
 
         .model-select-wrapper {
-            position: relative;
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
+
+        .model-select {
+            padding: 6px 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23818cf8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 28px;
+        }
+
+        .model-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+        }
+
+        .model-select option {
+            background: #0a0a12;
+            color: var(--text);
+        }
+
+        #providerSelect { width: 140px; }
+        #modelSelectEl { width: 180px; max-width: 220px; }
 
         .model-input {
             padding: 6px 12px;
@@ -753,7 +714,7 @@
             font-size: 0.75rem;
             color: var(--text);
             font-family: 'JetBrains Mono', monospace;
-            cursor: none;
+
             width: 180px;
             transition: all 0.2s ease;
         }
@@ -778,7 +739,11 @@
             z-index: 100;
             display: none;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
+
+        .model-dropdown::-webkit-scrollbar { display: none; }
 
         .model-dropdown.show {
             display: block;
@@ -792,7 +757,7 @@
 
         .model-option {
             padding: 12px 16px;
-            cursor: none;
+
             border-bottom: 1px solid var(--border);
             transition: background 0.15s ease;
         }
@@ -832,7 +797,11 @@
             overflow-y: auto;
             padding: 28px;
             scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
+
+        .chat-messages::-webkit-scrollbar { display: none; }
 
         .message {
             margin-bottom: 24px;
@@ -1069,7 +1038,7 @@
             background: linear-gradient(135deg, var(--accent), var(--purple));
             border: none;
             color: #fff;
-            cursor: none;
+
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1082,7 +1051,7 @@
             box-shadow: 0 8px 24px rgba(99,102,241,0.35);
         }
 
-        .send-btn:disabled { opacity: 0.4; cursor: none; transform: none; }
+        .send-btn:disabled { opacity: 0.4; transform: none; }
         .send-btn svg { width: 20px; height: 20px; }
 
         .chat-status {
@@ -1147,7 +1116,7 @@
         /* PROJECTS */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
 
@@ -1157,16 +1126,20 @@
             border-radius: 20px;
             padding: 28px;
             transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
-            cursor: none;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .project-card::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, transparent, rgba(99,102,241,0.04));
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--purple), var(--pink));
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -1178,6 +1151,32 @@
             transform: translateY(-4px);
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
+
+        .project-card.featured {
+            grid-column: 1 / -1;
+        }
+
+        .project-card.featured .project-title {
+            font-size: 1.15rem;
+        }
+
+        .project-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            flex-shrink: 0;
+        }
+
+        .project-icon.purple { background: rgba(168,85,247,0.12); color: var(--purple); }
+        .project-icon.cyan { background: rgba(34,211,238,0.12); color: var(--cyan); }
+        .project-icon.green { background: rgba(16,185,129,0.12); color: var(--green); }
+        .project-icon.amber { background: rgba(245,158,11,0.12); color: var(--amber); }
+        .project-icon.pink { background: rgba(236,72,153,0.12); color: var(--pink); }
 
         .project-header {
             display: flex;
@@ -1226,25 +1225,25 @@
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
+            margin-top: auto;
         }
 
         .project-tag {
             padding: 4px 10px;
-            background: rgba(99,102,241,0.08);
-            border: 1px solid rgba(99,102,241,0.15);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
             border-radius: 6px;
             font-size: 0.7rem;
             font-weight: 500;
-            color: var(--accent-light);
+            color: var(--text-secondary);
             font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s ease;
         }
 
-        .project-card.featured {
-            grid-column: 1 / -1;
-        }
-
-        .project-card.featured .project-title {
-            font-size: 1.15rem;
+        .project-tag:hover {
+            border-color: var(--accent);
+            color: var(--accent-light);
+            background: rgba(99,102,241,0.06);
         }
 
         .project-highlights {
@@ -1273,9 +1272,21 @@
             border-radius: 50%;
         }
 
+        .projects-row {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .projects-grid { grid-template-columns: 1fr; }
+            .projects-row { grid-template-columns: 1fr; }
+        }
+
         @media (max-width: 640px) {
             .projects-grid { grid-template-columns: 1fr; }
-            .project-card { cursor: auto; }
+            .projects-row { grid-template-columns: 1fr; }
         }
 
         /* FOOTER */
@@ -1301,7 +1312,7 @@
             font-size: 0.85rem;
             color: var(--text-secondary);
             transition: color 0.3s ease;
-            cursor: none;
+
         }
 
         .footer-link:hover { color: var(--accent-light); }
@@ -1337,11 +1348,10 @@
             .chat-messages { height: 380px; padding: 20px; }
             .chat-toolbar { flex-direction: column; gap: 10px; }
             .chat-toolbar-right { width: 100%; justify-content: flex-end; }
-            .model-input { width: 140px; }
+            .model-select-wrapper { flex-wrap: wrap; }
+            #providerSelect { width: 120px; }
+            #modelSelectEl { width: 140px; }
             .footer-links { flex-direction: column; gap: 16px; align-items: center; }
-            .cursor-dot, .cursor-ring { display: none; }
-            body { cursor: auto; }
-            .btn, .nav-link, .toolbar-btn, .skill-card, .stat-card, .send-btn, .footer-link, .nav-hamburger { cursor: auto; }
         }
 
         @keyframes fadeUp {
@@ -1352,20 +1362,17 @@
 </head>
 <body>
 
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
 <canvas id="particleCanvas"></canvas>
 
 <nav class="nav" id="nav">
     <a href="#hero" class="nav-logo">CF<span>.dev</span></a>
     <div class="nav-links">
         <a href="#hero" class="nav-link active" data-section="hero">Inicio</a>
+        <a href="#chat" class="nav-link" data-section="chat">Chat</a>
         <a href="#about" class="nav-link" data-section="about">Sobre mi</a>
         <a href="#skills" class="nav-link" data-section="skills">Skills</a>
         <a href="#experience" class="nav-link" data-section="experience">Experiencia</a>
         <a href="#projects" class="nav-link" data-section="projects">Proyectos</a>
-        <a href="#chat" class="nav-link" data-section="chat">Chat</a>
     </div>
     <div class="nav-hamburger" id="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('mobile-open')">
         <span></span><span></span><span></span>
@@ -1404,197 +1411,6 @@
     <div class="hero-float hero-float-4">
         <div class="float-card" style="animation-delay:-1.5s"><span class="icon">Py</span> Python & PyTorch</div>
     </div>
-        </div>
-
-    <div class="scroll-indicator">
-        <div class="scroll-mouse"></div>
-        <span>Scroll</span>
-    </div>
-</section>
-
-<section class="section" id="about">
-    <div class="reveal">
-        <div class="section-label">// sobre mi</div>
-        <h2 class="section-title">Desarrollador de IA<br>desde Rosario</h2>
-    </div>
-    <div class="about-grid">
-        <div class="about-text reveal reveal-delay-1">
-            <p>Soy <strong>Constantino Ferrucci</strong> (nacido en 2001), desarrollador de inteligencia artificial radicado en <strong>Rosario, Santa Fe</strong>. Me dedico al diseno e implementacion de soluciones basadas en IA para problemas reales.</p>
-            <p>Actualmente trabajo en <strong>Wiener lab.</strong> desarrollando sistemas de IA y plataformas para soluciones internas, incluyendo pipelines de datos, modelos de computer vision y chatbots. Ademas, soy <strong>instructor de Computer Vision y NLP en la Universidad Nacional de Rosario</strong>, formando a la proxima generacion de profesionales en IA.</p>
-            <p><strong>Tecnico en Inteligencia Artificial</strong> por la Universidad Nacional de Rosario. Mi formacion combina una base solida en ingenieria electromecanica con especializacion avanzada en IA. Preparado para afrontar desafios de innovacion y automatizacion.</p>
-        </div>
-        <div class="about-stats reveal reveal-delay-2">
-            <div class="stat-card">
-                <div class="stat-number">3+</div>
-                <div class="stat-label">Anos de experiencia</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">2</div>
-                <div class="stat-label">Roles activos</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">IA</div>
-                <div class="stat-label">Especializacion</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">∞</div>
-                <div class="stat-label">Curiosidad</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="section" id="skills">
-    <div class="reveal">
-        <div class="section-label">// tech stack</div>
-        <h2 class="section-title">Mis herramientas</h2>
-        <p class="section-desc">Tecnologias y herramientas que utilizo en el desarrollo de soluciones de inteligencia artificial.</p>
-    </div>
-        <div class="skills-container">
-        <div class="skill-card reveal"><div class="skill-name" style="font-size:1rem">Python</div></div>
-        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">PyTorch</div></div>
-        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">Hugging Face</div></div>
-        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">LangChain</div></div>
-        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">TensorFlow</div></div>
-        <div class="skill-card reveal reveal-delay-3"><div class="skill-name" style="font-size:1rem">Docker</div></div>
-        <div class="skill-card reveal reveal-delay-3"><div class="skill-name" style="font-size:1rem">FastAPI</div></div>
-        <div class="skill-card reveal"><div class="skill-name" style="font-size:1rem">OpenAI API</div></div>
-        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">Computer Vision</div></div>
-        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">NLP</div></div>
-        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">Cloudflare</div></div>
-        <div class="skill-card reveal reveal-delay-3"><div class="skill-name" style="font-size:1rem">Git & GitHub</div></div>
-        <div class="skill-card reveal"><div class="skill-name" style="font-size:1rem">Cursor</div></div>
-        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">Claude Code</div></div>
-        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">VS Code</div></div>
-        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">Linux</div></div>
-        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">PostgreSQL</div></div>
-        <div class="skill-card reveal reveal-delay-3"><div class="skill-name" style="font-size:1rem">scikit-learn</div></div>
-        </div>
-</section>
-
-<section class="section" id="experience">
-    <div class="reveal">
-        <div class="section-label">// trayectoria</div>
-        <h2 class="section-title">Trayectoria profesional</h2>
-        <p class="section-desc">Mi recorrido desde la ingenieria electromecanica hasta la inteligencia artificial aplicada.</p>
-    </div>
-    <div class="timeline reveal reveal-delay-1">
-        <div class="timeline-item">
-            <div class="timeline-date">Jun 2023 - Presente</div>
-            <div class="timeline-title">Desarrollador de Inteligencia Artificial</div>
-            <div class="timeline-company">Wiener lab. | Rosario, Argentina</div>
-            <div class="timeline-desc">Desarrollo de sistemas de IA y plataformas para soluciones internas. Construccion de pipelines de datos, modelos de computer vision para procesamiento de documentos, chatbots y asistentes virtuales. Integracion de APIs de modelos de lenguaje para automatizacion de procesos.</div>
-        </div>
-        <div class="timeline-item">
-            <div class="timeline-date">Oct 2024 - Presente</div>
-            <div class="timeline-title">Instructor de Computer Vision y NLP</div>
-            <div class="timeline-company">Universidad Nacional de Rosario</div>
-            <div class="timeline-desc">Docente en la carrera de Inteligencia Artificial. Enseno fundamentos y aplicaciones practicas de Computer Vision y Procesamiento de Lenguaje Natural. Preparacion de material didactico, evaluaciones y proyectos practicos.</div>
-        </div>
-        <div class="timeline-item">
-            <div class="timeline-date">2022 - 2024</div>
-            <div class="timeline-title">Tecnicatura Universitaria en Inteligencia Artificial</div>
-            <div class="timeline-company">Universidad Nacional de Rosario</div>
-            <div class="timeline-desc">Carrera de grado completada. Especializacion en tecnicas de IA, deep learning y aplicaciones industriales.</div>
-        </div>
-    </div>
- </section>
-
-<section class="section" id="projects">
-    <div class="reveal">
-        <div class="section-label">// proyectos</div>
-        <h2 class="section-title">Proyectos destacados</h2>
-        <p class="section-desc">Desarrollos que reflejan mi experiencia integrando IA, datos y software.</p>
-    </div>
-    <div class="projects-grid">
-        <div class="project-card featured reveal">
-            <div class="project-header">
-                <div class="project-title">Datagentra - Analista de Datos Autonomo</div>
-                <a href="https://github.com/TinoFerrucci/Datagentra" target="_blank" class="project-link">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                </a>
-            </div>
-            <ul class="project-highlights">
-                <li>Pipeline de Text-to-SQL con agente autonomo de 5 pasos: generacion de SQL, ejecucion con reintentos, resumen, sugerencia de grafico y serializacion</li>
-                <li>Integracion con LangChain compatible con OpenAI (cloud) y Ollama (local)</li>
-                <li>API REST con FastAPI, validacion con Pydantic y manejo de errores con reintentos inteligentes</li>
-                <li>Frontend React + TypeScript con graficos dinamicos, tema claro/oscuro y Tailwind CSS</li>
-                <li>Motor de solo lectura con bloqueo de operaciones peligrosas (INSERT, UPDATE, DELETE, DROP)</li>
-                <li>Despliegue con Docker Compose: orquestacion de 3 servicios con health checks</li>
-            </ul>
-            <div class="project-tags">
-                <span class="project-tag">Python</span>
-                <span class="project-tag">FastAPI</span>
-                <span class="project-tag">React</span>
-                <span class="project-tag">TypeScript</span>
-                <span class="project-tag">LangChain</span>
-                <span class="project-tag">Docker</span>
-                <span class="project-tag">SQLite</span>
-                <span class="project-tag">OpenAI</span>
-                <span class="project-tag">Ollama</span>
-            </div>
-        </div>
-
-        <div class="project-card reveal reveal-delay-1">
-            <div class="project-header">
-                <div class="project-title">Asistente Inteligente basado en Videojuegos</div>
-                <a href="https://github.com/TinoFerrucci/NLP_Final_Project" target="_blank" class="project-link">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                </a>
-            </div>
-            <ul class="project-highlights">
-                <li>Busqueda semantica con vectores de altas dimensiones y ChromaDB</li>
-                <li>Scraping HTML y API REST para obtencion de datos</li>
-                <li>Generacion de texto con modelos open-source para dialogos contextuales</li>
-                <li>Investigacion sobre agentes inteligentes autonomos</li>
-            </ul>
-            <div class="project-tags">
-                <span class="project-tag">NLP</span>
-                <span class="project-tag">ChromaDB</span>
-                <span class="project-tag">Embeddings</span>
-                <span class="project-tag">Python</span>
-                <span class="project-tag">RAG</span>
-            </div>
-        </div>
-
-        <div class="project-card reveal reveal-delay-2">
-            <div class="project-header">
-                <div class="project-title">Prediccion de Lluvia en Australia</div>
-                <a href="https://github.com/Shannon-21/Aprendizaje_Automatico_1" target="_blank" class="project-link">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                </a>
-            </div>
-            <ul class="project-highlights">
-                <li>Modelos de regresion y clasificacion para predecir probabilidad y cantidad de lluvia</li>
-                <li>Redes neuronales y optimizacion de hiperparametros</li>
-                <li>Explicabilidad con SHAP para interpretar las predicciones</li>
-                <li>Despliegue interactivo con Streamlit</li>
-            </ul>
-            <div class="project-tags">
-                <span class="project-tag">scikit-learn</span>
-                <span class="project-tag">Redes Neuronales</span>
-                <span class="project-tag">SHAP</span>
-                <span class="project-tag">Streamlit</span>
-                <span class="project-tag">Python</span>
-            </div>
-        </div>
-
-        <div class="project-card featured reveal reveal-delay-1">
-            <div class="project-header">
-                <div class="project-title">Otros proyectos</div>
-            </div>
-            <div class="project-tags" style="gap: 8px; line-height: 1.6;">
-                <a href="https://github.com/Shannon-21/TP_Procesamiento_Imagenes" target="_blank" class="project-tag" style="text-decoration:none">Procesamiento de imagenes</a>
-                <a href="https://github.com/Shannon-21/NLP_TP1" target="_blank" class="project-tag" style="text-decoration:none">Bot de Telegram de noticias</a>
-                <a href="https://github.com/AlexLopezz/JAVA-Proyecto_Pronosticos-Deportivos" target="_blank" class="project-tag" style="text-decoration:none">Pronosticos deportivos (Java)</a>
-                <a href="https://github.com/TinoFerrucci/sqlalchemy_with_fastapi" target="_blank" class="project-tag" style="text-decoration:none">SQLAlchemy + FastAPI</a>
-                <a href="https://github.com/Shannon-21/TUIA_BD_TP1" target="_blank" class="project-tag" style="text-decoration:none">Base de datos de un cine (SQL)</a>
-                <a href="https://github.com/Simon890/estadistica_tp1" target="_blank" class="project-tag" style="text-decoration:none">Analisis estadistico (R)</a>
-                <a href="https://github.com/TinoFerrucci/tp-entorno" target="_blank" class="project-tag" style="text-decoration:none">Bash scripting</a>
-                <a href="https://github.com/TinoFerrucci/CRUDProgram" target="_blank" class="project-tag" style="text-decoration:none">CRUD de Recetas</a>
-                <a href="https://github.com/TinoFerrucci/PythonGames" target="_blank" class="project-tag" style="text-decoration:none">Juegos basicos (Python)</a>
-            </div>
-        </div>
     </div>
 </section>
 
@@ -1623,8 +1439,12 @@
                 </div>
                 <div class="chat-toolbar-right">
                     <div class="model-select-wrapper">
-                        <input type="text" class="model-input" id="modelSearch" placeholder="Elegir modelo..." onclick="toggleDropdown()" readonly>
-                        <div class="model-dropdown" id="modelDropdown"></div>
+                        <select class="model-select" id="providerSelect" onchange="onProviderChange()">
+                            <option value="">Proveedor...</option>
+                        </select>
+                        <select class="model-select" id="modelSelectEl" onchange="onModelChange()">
+                            <option value="">Modelo...</option>
+                        </select>
                     </div>
                     <input type="hidden" id="selectedModel" value="">
                     <button class="toolbar-btn" onclick="clearConversation()">Limpiar chat</button>
@@ -1650,6 +1470,198 @@
                 </div>
             </div>
             <div class="chat-status" id="modelsStatus"></div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="about">
+    <div class="reveal">
+        <div class="section-label">// sobre mi</div>
+        <h2 class="section-title">Desarrollador de IA<br>desde Rosario</h2>
+    </div>
+    <div class="about-grid">
+        <div class="about-text reveal reveal-delay-1">
+            <p>Soy <strong>Constantino Ferrucci</strong> (nacido en 2001), desarrollador de inteligencia artificial radicado en <strong>Rosario, Santa Fe</strong>. Me dedico al diseno e implementacion de soluciones basadas en IA para problemas reales.</p>
+            <p>Actualmente trabajo en <strong>Wiener lab.</strong> desarrollando sistemas de IA y plataformas para soluciones internas, incluyendo pipelines de datos, modelos de computer vision y chatbots. Ademas, soy <strong>instructor de Computer Vision y NLP en la Universidad Nacional de Rosario</strong>, formando a la proxima generacion de profesionales en IA.</p>
+            <p><strong>Tecnico en Inteligencia Artificial</strong> por la Universidad Nacional de Rosario. Mi formacion combina una base solida en ingenieria electromecanica con especializacion avanzada en IA. Preparado para afrontar desafios de innovacion y automatizacion.</p>
+        </div>
+        <div class="about-stats reveal reveal-delay-2">
+            <div class="stat-card">
+                <div class="stat-number">3+</div>
+                <div class="stat-label">Anos de experiencia</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Roles activos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">Full</div>
+                <div class="stat-label">Stack</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">∞</div>
+                <div class="stat-label">Curiosidad</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="skills">
+    <div class="reveal">
+        <div class="section-label">// tech stack</div>
+        <h2 class="section-title">Mis herramientas</h2>
+        <p class="section-desc">Tecnologias y herramientas que uso dia a dia para construir soluciones.</p>
+    </div>
+        <div class="skills-container">
+        <div class="skill-card reveal"><div class="skill-name" style="font-size:1rem">Python</div></div>
+        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">PyTorch</div></div>
+        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">Hugging Face</div></div>
+        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">LangChain</div></div>
+        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">TensorFlow</div></div>
+        <div class="skill-card reveal reveal-delay-3"><div class="skill-name" style="font-size:1rem">Docker</div></div>
+        <div class="skill-card reveal reveal-delay-3"><div class="skill-name" style="font-size:1rem">FastAPI</div></div>
+        <div class="skill-card reveal"><div class="skill-name" style="font-size:1rem">OpenAI API</div></div>
+        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">Computer Vision</div></div>
+        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">NLP</div></div>
+        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">Cloudflare</div></div>
+        <div class="skill-card reveal reveal-delay-3"><div class="skill-name" style="font-size:1rem">Git & GitHub</div></div>
+        <div class="skill-card reveal"><div class="skill-name" style="font-size:1rem">Cursor</div></div>
+        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">Claude Code</div></div>
+        <div class="skill-card reveal reveal-delay-1"><div class="skill-name" style="font-size:1rem">VS Code</div></div>
+        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">Linux</div></div>
+        <div class="skill-card reveal reveal-delay-2"><div class="skill-name" style="font-size:1rem">PostgreSQL</div></div>
+        <div class="skill-card reveal reveal-delay-3"><div class="skill-name" style="font-size:1rem">scikit-learn</div></div>
+        </div>
+</section>
+
+<section class="section" id="experience">
+    <div class="reveal">
+        <div class="section-label">// trayectoria</div>
+        <h2 class="section-title">Trayectoria profesional</h2>
+        <p class="section-desc">Mi recorrido profesional, de la ingenieria a la tecnologia.</p>
+    </div>
+    <div class="timeline reveal reveal-delay-1">
+        <div class="timeline-item">
+            <div class="timeline-date">Jun 2023 - Presente</div>
+            <div class="timeline-title">Desarrollador de Inteligencia Artificial</div>
+            <div class="timeline-company">Wiener lab. | Rosario, Argentina</div>
+            <div class="timeline-desc">Desarrollo de sistemas de IA y plataformas para soluciones internas. Construccion de pipelines de datos, modelos de computer vision para procesamiento de documentos, chatbots y asistentes virtuales. Integracion de APIs de modelos de lenguaje para automatizacion de procesos.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">Oct 2024 - Presente</div>
+            <div class="timeline-title">Instructor de Computer Vision y NLP</div>
+            <div class="timeline-company">Universidad Nacional de Rosario</div>
+            <div class="timeline-desc">Docente en la carrera de Inteligencia Artificial. Enseno fundamentos y aplicaciones practicas de Computer Vision y Procesamiento de Lenguaje Natural. Preparacion de material didactico, evaluaciones y proyectos practicos.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">2022 - 2024</div>
+            <div class="timeline-title">Tecnicatura Universitaria en Inteligencia Artificial</div>
+            <div class="timeline-company">Universidad Nacional de Rosario</div>
+            <div class="timeline-desc">Titulo universitario completado. Especializacion en tecnicas de IA, deep learning y aplicaciones industriales.</div>
+        </div>
+    </div>
+ </section>
+
+<section class="section" id="projects">
+    <div class="reveal">
+        <div class="section-label">// proyectos</div>
+        <h2 class="section-title">Proyectos destacados</h2>
+        <p class="section-desc">Una seleccion de proyectos que reflejan como resuelvo problemas con codigo.</p>
+    </div>
+    <div class="projects-grid">
+        <div class="project-card featured reveal">
+            <div class="project-icon purple">DA</div>
+            <div class="project-header">
+                <div class="project-title">Datagentra - Analista de Datos Autonomo</div>
+                <a href="https://github.com/TinoFerrucci/Datagentra" target="_blank" class="project-link">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+            </div>
+            <ul class="project-highlights">
+                <li>Pipeline de Text-to-SQL con agente autonomo de 5 pasos: generacion de SQL, ejecucion con reintentos, resumen, sugerencia de grafico y serializacion</li>
+                <li>Integracion con LangChain compatible con OpenAI (cloud) y Ollama (local)</li>
+                <li>API REST con FastAPI, validacion con Pydantic y manejo de errores con reintentos inteligentes</li>
+                <li>Frontend React + TypeScript con graficos dinamicos, tema claro/oscuro y Tailwind CSS</li>
+                <li>Motor de solo lectura con bloqueo de operaciones peligrosas (INSERT, UPDATE, DELETE, DROP)</li>
+                <li>Despliegue con Docker Compose: orquestacion de 3 servicios con health checks</li>
+            </ul>
+            <div class="project-tags">
+                <span class="project-tag">Python</span>
+                <span class="project-tag">FastAPI</span>
+                <span class="project-tag">React</span>
+                <span class="project-tag">TypeScript</span>
+                <span class="project-tag">LangChain</span>
+                <span class="project-tag">Docker</span>
+                <span class="project-tag">SQLite</span>
+                <span class="project-tag">OpenAI</span>
+                <span class="project-tag">Ollama</span>
+            </div>
+        </div>
+
+        <div class="projects-row">
+        <div class="project-card reveal reveal-delay-1">
+            <div class="project-icon cyan">VG</div>
+            <div class="project-header">
+                <div class="project-title">Asistente Inteligente basado en Videojuegos</div>
+                <a href="https://github.com/TinoFerrucci/NLP_Final_Project" target="_blank" class="project-link">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+            </div>
+            <ul class="project-highlights">
+                <li>Busqueda semantica con vectores de altas dimensiones y ChromaDB</li>
+                <li>Scraping HTML y API REST para obtencion de datos</li>
+                <li>Generacion de texto con modelos open-source para dialogos contextuales</li>
+                <li>Investigacion sobre agentes inteligentes autonomos</li>
+            </ul>
+            <div class="project-tags">
+                <span class="project-tag">NLP</span>
+                <span class="project-tag">ChromaDB</span>
+                <span class="project-tag">Embeddings</span>
+                <span class="project-tag">Python</span>
+                <span class="project-tag">RAG</span>
+            </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-2">
+            <div class="project-icon amber">LL</div>
+            <div class="project-header">
+                <div class="project-title">Prediccion de Lluvia en Australia</div>
+                <a href="https://github.com/Shannon-21/Aprendizaje_Automatico_1" target="_blank" class="project-link">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+            </div>
+            <ul class="project-highlights">
+                <li>Modelos de regresion y clasificacion para predecir probabilidad y cantidad de lluvia</li>
+                <li>Redes neuronales y optimizacion de hiperparametros</li>
+                <li>Explicabilidad con SHAP para interpretar las predicciones</li>
+                <li>Despliegue interactivo con Streamlit</li>
+            </ul>
+            <div class="project-tags">
+                <span class="project-tag">scikit-learn</span>
+                <span class="project-tag">Redes Neuronales</span>
+                <span class="project-tag">SHAP</span>
+                <span class="project-tag">Streamlit</span>
+                <span class="project-tag">Python</span>
+            </div>
+        </div>
+        </div>
+
+        <div class="project-card featured reveal reveal-delay-1">
+            <div class="project-icon green">+</div>
+            <div class="project-header">
+                <div class="project-title">Otros proyectos</div>
+            </div>
+            <div class="project-tags" style="gap: 8px; line-height: 1.6;">
+                <a href="https://github.com/Shannon-21/TP_Procesamiento_Imagenes" target="_blank" class="project-tag" style="text-decoration:none">Procesamiento de imagenes</a>
+                <a href="https://github.com/Shannon-21/NLP_TP1" target="_blank" class="project-tag" style="text-decoration:none">Bot de Telegram de noticias</a>
+                <a href="https://github.com/AlexLopezz/JAVA-Proyecto_Pronosticos-Deportivos" target="_blank" class="project-tag" style="text-decoration:none">Pronosticos deportivos (Java)</a>
+                <a href="https://github.com/TinoFerrucci/sqlalchemy_with_fastapi" target="_blank" class="project-tag" style="text-decoration:none">SQLAlchemy + FastAPI</a>
+                <a href="https://github.com/Shannon-21/TUIA_BD_TP1" target="_blank" class="project-tag" style="text-decoration:none">Base de datos de un cine (SQL)</a>
+                <a href="https://github.com/Simon890/estadistica_tp1" target="_blank" class="project-tag" style="text-decoration:none">Analisis estadistico (R)</a>
+                <a href="https://github.com/TinoFerrucci/tp-entorno" target="_blank" class="project-tag" style="text-decoration:none">Bash scripting</a>
+                <a href="https://github.com/TinoFerrucci/CRUDProgram" target="_blank" class="project-tag" style="text-decoration:none">CRUD de Recetas</a>
+                <a href="https://github.com/TinoFerrucci/PythonGames" target="_blank" class="project-tag" style="text-decoration:none">Juegos basicos (Python)</a>
+            </div>
         </div>
     </div>
 </section>
@@ -1755,29 +1767,6 @@ animateParticles();
 window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
 window.addEventListener('resize', () => { initParticles(); });
 
-// ==================== CUSTOM CURSOR ====================
-const dot = document.getElementById('cursorDot');
-const ring = document.getElementById('cursorRing');
-let cursorX = 0, cursorY = 0, ringX = 0, ringY = 0;
-
-document.addEventListener('mousemove', e => { cursorX = e.clientX; cursorY = e.clientY; });
-
-function animateCursor() {
-    ringX += (cursorX - ringX) * 0.15;
-    ringY += (cursorY - ringY) * 0.15;
-    dot.style.left = cursorX - 4 + 'px';
-    dot.style.top = cursorY - 4 + 'px';
-    ring.style.left = ringX - 20 + 'px';
-    ring.style.top = ringY - 20 + 'px';
-    requestAnimationFrame(animateCursor);
-}
-animateCursor();
-
-document.querySelectorAll('a, button, input, .skill-card, .stat-card, .nav-link').forEach(el => {
-    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
-    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
-});
-
 // ==================== TYPING EFFECT ====================
 const typingPhrases = [
     'AI Developer & Researcher',
@@ -1840,7 +1829,8 @@ const WORKER_URL = 'https://prueba.constantino-ferrucci.workers.dev';
 
 let conversationHistory = [];
 let allModels = [];
-let filteredModels = [];
+let modelsByProvider = {};
+let selectedProvider = '';
 const initialMessage = document.getElementById('chatMessages').innerHTML;
 
 async function loadModels() {
@@ -1859,11 +1849,26 @@ async function loadModels() {
         });
 
         allModels.sort((a, b) => a.name.localeCompare(b.name));
-        filteredModels = [...allModels];
-        renderDropdown();
+
+        modelsByProvider = {};
+        allModels.forEach(model => {
+            const parts = model.id.split('/');
+            const provider = parts.length > 1 ? parts[0] : 'other';
+            if (!modelsByProvider[provider]) modelsByProvider[provider] = [];
+            modelsByProvider[provider].push(model);
+        });
+
+        populateProviders();
 
         const defaultModel = allModels.find(m => m.id.includes('gpt-4o-mini')) || allModels[0];
-        if (defaultModel) selectModel(defaultModel);
+        if (defaultModel) {
+            const parts = defaultModel.id.split('/');
+            const provider = parts.length > 1 ? parts[0] : 'other';
+            document.getElementById('providerSelect').value = provider;
+            onProviderChange();
+            document.getElementById('modelSelectEl').value = defaultModel.id;
+            document.getElementById('selectedModel').value = defaultModel.id;
+        }
 
         status.textContent = `${allModels.length} modelos disponibles`;
         status.className = 'chat-status ok';
@@ -1875,80 +1880,38 @@ async function loadModels() {
     }
 }
 
-function renderDropdown() {
-    const dropdown = document.getElementById('modelDropdown');
-    dropdown.innerHTML = '';
+function populateProviders() {
+    const sel = document.getElementById('providerSelect');
+    sel.innerHTML = '<option value="">Proveedor...</option>';
+    Object.keys(modelsByProvider).sort().forEach(provider => {
+        const opt = document.createElement('option');
+        opt.value = provider;
+        opt.textContent = provider;
+        sel.appendChild(opt);
+    });
+}
 
-    const grouped = {};
-    filteredModels.forEach(model => {
+function onProviderChange() {
+    const provider = document.getElementById('providerSelect').value;
+    const modelSel = document.getElementById('modelSelectEl');
+    modelSel.innerHTML = '<option value="">Modelo...</option>';
+    document.getElementById('selectedModel').value = '';
+
+    if (!provider || !modelsByProvider[provider]) return;
+
+    modelsByProvider[provider].forEach(model => {
+        const opt = document.createElement('option');
+        opt.value = model.id;
         const parts = model.id.split('/');
-        const provider = parts.length > 1 ? parts[0] : 'other';
-        const modelId = parts.length > 1 ? parts.slice(1).join('/') : model.id;
-        if (!grouped[provider]) grouped[provider] = [];
-        grouped[provider].push({ ...model, provider, modelName: modelId });
-    });
-
-    const sortedProviders = Object.keys(grouped).sort();
-
-    sortedProviders.forEach(provider => {
-        const group = document.createElement('div');
-        group.className = 'model-group';
-
-        const header = document.createElement('div');
-        header.className = 'model-group-header';
-        header.textContent = provider;
-        group.appendChild(header);
-
-        grouped[provider].forEach(model => {
-            const option = document.createElement('div');
-            option.className = 'model-option';
-            option.innerHTML = `<div class="model-option-name">${model.name}</div><div class="model-option-id">${model.modelName}</div>`;
-            option.onclick = (e) => { e.stopPropagation(); selectModel(model); };
-            group.appendChild(option);
-        });
-
-        dropdown.appendChild(group);
+        const modelName = parts.length > 1 ? parts.slice(1).join('/') : model.id;
+        opt.textContent = model.name || modelName;
+        modelSel.appendChild(opt);
     });
 }
 
-function selectModel(model) {
-    const display = `${model.provider} / ${model.name}`;
-    document.getElementById('modelSearch').value = display;
-    document.getElementById('selectedModel').value = model.id;
-    document.getElementById('modelDropdown').classList.remove('show');
+function onModelChange() {
+    document.getElementById('selectedModel').value = document.getElementById('modelSelectEl').value;
 }
-
-function toggleDropdown() {
-    if (allModels.length > 0) document.getElementById('modelDropdown').classList.toggle('show');
-}
-
-function filterModels() {
-    const term = document.getElementById('modelSearch').value.toLowerCase();
-    filteredModels = allModels.filter(m =>
-        m.name.toLowerCase().includes(term) || m.id.toLowerCase().includes(term)
-    );
-    renderDropdown();
-    document.getElementById('modelDropdown').classList.add('show');
-}
-
-function toggleDropdown() {
-    if (allModels.length > 0) {
-        const dd = document.getElementById('modelDropdown');
-        if (dd.classList.contains('show')) {
-            dd.classList.remove('show');
-        } else {
-            filteredModels = [...allModels];
-            renderDropdown();
-            dd.classList.add('show');
-        }
-    }
-}
-
-document.addEventListener('click', e => {
-    if (!document.querySelector('.model-select-wrapper').contains(e.target)) {
-        document.getElementById('modelDropdown').classList.remove('show');
-    }
-});
 
 function clearConversation() {
     conversationHistory = [];
