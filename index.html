@@ -3839,6 +3839,10 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 // ==================== CHAT BOT ====================
 const WORKER_URL = 'https://prueba.constantino-ferrucci.workers.dev';
 
+// Exact id, not a substring: 'gpt-5.6-terra' is also a prefix of
+// 'gpt-5.6-terra-pro', so includes() could silently pick the wrong one.
+const DEFAULT_MODEL_ID = 'openai/gpt-5.6-terra';
+
 let conversationHistory = [];
 let allModels = [];
 let modelsByProvider = {};
@@ -3904,7 +3908,9 @@ async function loadModels() {
 
         populateProviders();
 
-        const defaultModel = allModels.find(m => m.id.includes('gpt-4o-mini')) || allModels[0];
+        const defaultModel = allModels.find(m => m.id === DEFAULT_MODEL_ID)
+            || allModels.find(m => m.id.includes('gpt-4o-mini'))
+            || allModels[0];
         if (defaultModel) {
             const parts = defaultModel.id.split('/');
             document.getElementById('providerSelect').value = parts.length > 1 ? parts[0] : 'other';

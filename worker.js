@@ -9,7 +9,7 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-const DEFAULT_MODEL = 'openai/gpt-4o-mini';
+const DEFAULT_MODEL = 'openai/gpt-5.6-terra';
 
 const SYSTEM_PROMPT = `Sos el asistente virtual del portfolio de Constantino Ferrucci. Sos profesional, calido y conoces en profundidad su perfil. Respondes SIEMPRE en el idioma en el que te escriban: si te escriben en ingles, respondes en ingles; si te escriben en espanol, respondes en espanol rioplatense (voseo) con tono profesional pero cercano.
 
