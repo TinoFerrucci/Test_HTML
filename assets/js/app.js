@@ -1,6 +1,16 @@
 // ==================== PREFERENCES ====================
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+// Cross-fades a repaint that touches most of the page. Unsupported browsers and
+// anyone who asked for less motion get the plain mutation, same end state.
+function withViewTransition(mutate) {
+    if (typeof document.startViewTransition !== 'function' || reduceMotion.matches) {
+        mutate();
+        return;
+    }
+    document.startViewTransition(mutate);
+}
+
 // ==================== i18n ====================
 // English is the source of truth and lives inline in the HTML (so the page is
 // readable with JS off and indexable in English). This table holds both locales
@@ -10,6 +20,7 @@ const I18N = {
         'nav.home': 'Home', 'nav.chat': 'Chat', 'nav.about': 'About', 'nav.skills': 'Skills',
         'nav.exp': 'Experience', 'nav.projects': 'Projects', 'nav.contact': 'Contact',
         'nav.lang': 'Cambiar a español', 'nav.langShort': 'ES',
+        'nav.themeLight': 'Switch to light theme', 'nav.themeDark': 'Switch to dark theme',
 
         'hero.tag': 'Open to international opportunities',
         'hero.sub': 'I build Generative AI systems that survive production &mdash; enterprise RAG architecture, retrieval quality, and the backend engineering that holds it all together.',
@@ -152,6 +163,7 @@ const I18N = {
         'nav.home': 'Inicio', 'nav.chat': 'Chat', 'nav.about': 'Sobre mí', 'nav.skills': 'Skills',
         'nav.exp': 'Experiencia', 'nav.projects': 'Proyectos', 'nav.contact': 'Contacto',
         'nav.lang': 'Switch to English', 'nav.langShort': 'EN',
+        'nav.themeLight': 'Cambiar a tema claro', 'nav.themeDark': 'Cambiar a tema oscuro',
 
         'hero.tag': 'Abierto a oportunidades internacionales',
         'hero.sub': 'Construyo sistemas de IA generativa que sobreviven a producción: arquitectura RAG empresarial, calidad de recuperación y la ingeniería de backend que sostiene todo eso.',
@@ -336,7 +348,8 @@ if (!storedLang) {
 }
 
 document.getElementById('langToggle').addEventListener('click', () => {
-    applyLang(lang === 'en' ? 'es' : 'en');
+    const next = lang === 'en' ? 'es' : 'en';
+    withViewTransition(() => applyLang(next));
 });
 
 applyLang(storedLang);
@@ -354,12 +367,18 @@ function currentTheme() {
 function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     try { localStorage.setItem('theme', theme); } catch (e) { /* storage blocked */ }
-    themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
+    themeToggle.setAttribute('aria-label', t(theme === 'dark' ? 'nav.themeLight' : 'nav.themeDark'));
     document.dispatchEvent(new CustomEvent('themechange'));
 }
 
 themeToggle.addEventListener('click', () => {
-    applyTheme(currentTheme() === 'dark' ? 'light' : 'dark');
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
+    withViewTransition(() => applyTheme(next));
+});
+
+// The label describes the *next* state, so it has to follow a language change.
+document.addEventListener('langchange', () => {
+    themeToggle.setAttribute('aria-label', t(currentTheme() === 'dark' ? 'nav.themeLight' : 'nav.themeDark'));
 });
 
 // Follow the OS while the user has not made an explicit choice
@@ -397,14 +416,25 @@ document.addEventListener('keydown', e => {
 // Leaving the mobile breakpoint must not strand the page in the open state
 window.matchMedia('(min-width: 901px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
 
-// ==================== PARTICLE CANVAS ====================
-// Purely decorative: skipped entirely under reduced motion, and paused whenever
-// the tab is hidden or the hero has scrolled out of view.
-const canvas = document.getElementById('particleCanvas');
+// ==================== HERO: RETRIEVAL IN EMBEDDING SPACE ====================
+// The hero draws the thing the rest of the page claims to do. Each point is a
+// chunk sitting in a vector space; every few seconds a query lands, the k
+// nearest light up and wire themselves to it, then everything settles back.
+// Still decorative, so it keeps the same discipline as any decorative layer:
+// skipped entirely under reduced motion, paused when the tab is hidden or the
+// hero has scrolled out of view.
+const canvas = document.getElementById('heroCanvas');
 const ctx = canvas.getContext('2d');
-let particles = [];
+
+const K_NEAREST = 6;
+const QUERY_PERIOD = 3400;      // ms between one query and the next
+const QUERY_LIFE = 2400;        // ms a single query stays on screen
+
+let nodes = [];
+let query = null;
 let mouse = { x: -1000, y: -1000 };
 let animFrame = null;
+let lastQueryAt = 0;
 let heroVisible = true;
 let accentRGB = '99,102,241';
 
@@ -423,15 +453,16 @@ function resizeCanvas() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
-class Particle {
+class Chunk {
     constructor() { this.reset(); }
     reset() {
         this.x = Math.random() * window.innerWidth;
         this.y = Math.random() * window.innerHeight;
-        this.size = Math.random() * 1.5 + 0.5;
-        this.speedX = (Math.random() - 0.5) * 0.3;
-        this.speedY = (Math.random() - 0.5) * 0.3;
-        this.opacity = Math.random() * 0.5 + 0.1;
+        this.size = Math.random() * 1.5 + 0.6;
+        this.speedX = (Math.random() - 0.5) * 0.28;
+        this.speedY = (Math.random() - 0.5) * 0.28;
+        this.opacity = Math.random() * 0.45 + 0.12;
+        this.glow = 0;                              // 0..1 while this chunk is a hit
     }
     update() {
         this.x += this.speedX;
@@ -446,35 +477,37 @@ class Particle {
         }
         if (this.x < 0 || this.x > window.innerWidth) this.speedX *= -1;
         if (this.y < 0 || this.y > window.innerHeight) this.speedY *= -1;
+        this.glow *= 0.94;                          // decay back to ambient
     }
     draw() {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + accentRGB + ',' + this.opacity + ')';
+        ctx.arc(this.x, this.y, this.size * (1 + this.glow * 1.6), 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + accentRGB + ',' + Math.min(1, this.opacity + this.glow * 0.75) + ')';
         ctx.fill();
     }
 }
 
-function initParticles() {
-    // Fewer particles on phones: the connection pass is O(n^2)
+function initNodes() {
+    // Fewer points on phones: the ambient link pass is O(n^2)
     const cap = window.innerWidth < 640 ? 34 : 70;
     const count = Math.min(cap, Math.floor(window.innerWidth * window.innerHeight / 18000));
-    particles = [];
-    for (let i = 0; i < count; i++) particles.push(new Particle());
+    nodes = [];
+    for (let i = 0; i < count; i++) nodes.push(new Chunk());
+    query = null;
 }
 
-function drawConnections() {
-    for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
+function drawAmbientLinks() {
+    for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
             const distSq = dx * dx + dy * dy;
             if (distSq < 14400) {                   // 120px
                 const dist = Math.sqrt(distSq);
                 ctx.beginPath();
-                ctx.moveTo(particles[i].x, particles[i].y);
-                ctx.lineTo(particles[j].x, particles[j].y);
-                ctx.strokeStyle = 'rgba(' + accentRGB + ',' + (0.08 * (1 - dist / 120)) + ')';
+                ctx.moveTo(nodes[i].x, nodes[i].y);
+                ctx.lineTo(nodes[j].x, nodes[j].y);
+                ctx.strokeStyle = 'rgba(' + accentRGB + ',' + (0.07 * (1 - dist / 120)) + ')';
                 ctx.lineWidth = 0.5;
                 ctx.stroke();
             }
@@ -482,42 +515,102 @@ function drawConnections() {
     }
 }
 
-function animateParticles() {
+// A query is a point dropped into the space; its k nearest chunks are the hits.
+// Ranking once at spawn keeps the per-frame cost flat.
+function spawnQuery(now) {
+    if (nodes.length < K_NEAREST) return;
+    const x = window.innerWidth * (0.15 + Math.random() * 0.7);
+    const y = window.innerHeight * (0.15 + Math.random() * 0.7);
+    const hits = nodes
+        .map(n => ({ n, d: Math.hypot(n.x - x, n.y - y) }))
+        .sort((a, b) => a.d - b.d)
+        .slice(0, K_NEAREST);
+    query = { x, y, born: now, hits };
+}
+
+function drawQuery(now) {
+    if (!query) return;
+    const p = (now - query.born) / QUERY_LIFE;
+    if (p >= 1) { query = null; return; }
+
+    // Fade the whole event in and out so nothing pops on or off.
+    const envelope = p < 0.12 ? p / 0.12 : (p > 0.75 ? (1 - p) / 0.25 : 1);
+
+    // The search radius sweeps outward first, then the hits stay wired up.
+    const sweep = Math.min(1, p / 0.35);
+    ctx.beginPath();
+    ctx.arc(query.x, query.y, 18 + sweep * 150, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(' + accentRGB + ',' + (0.28 * envelope * (1 - sweep)) + ')';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    query.hits.forEach((hit, i) => {
+        const at = 0.12 + i * 0.05;                 // closest neighbour connects first
+        if (p < at) return;
+        const strength = envelope * (1 - i / (K_NEAREST + 2));
+        ctx.beginPath();
+        ctx.moveTo(query.x, query.y);
+        ctx.lineTo(hit.n.x, hit.n.y);
+        ctx.strokeStyle = 'rgba(' + accentRGB + ',' + (0.45 * strength) + ')';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        hit.n.glow = Math.max(hit.n.glow, strength);
+    });
+
+    ctx.beginPath();
+    ctx.arc(query.x, query.y, 3.2, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(' + accentRGB + ',' + (0.9 * envelope) + ')';
+    ctx.fill();
+}
+
+function frame(now) {
+    // First frame: hold the opening query back so it is not lost behind paint.
+    if (!lastQueryAt) lastQueryAt = now - QUERY_PERIOD * 0.6;
+
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    for (const p of particles) { p.update(); p.draw(); }
-    drawConnections();
-    animFrame = requestAnimationFrame(animateParticles);
+
+    if (!query && now - lastQueryAt > QUERY_PERIOD) {
+        spawnQuery(now);
+        lastQueryAt = now;
+    }
+
+    for (const n of nodes) n.update();
+    drawAmbientLinks();
+    drawQuery(now);                                 // raises glow on this frame's hits
+    for (const n of nodes) n.draw();
+
+    animFrame = requestAnimationFrame(frame);
 }
 
-function startParticles() {
+function startHero() {
     if (animFrame !== null || reduceMotion.matches) return;
-    animFrame = requestAnimationFrame(animateParticles);
+    animFrame = requestAnimationFrame(frame);
 }
 
-function stopParticles() {
+function stopHero() {
     if (animFrame === null) return;
     cancelAnimationFrame(animFrame);
     animFrame = null;
 }
 
-function syncParticles() {
-    if (reduceMotion.matches || document.hidden || !heroVisible) stopParticles();
-    else startParticles();
+function syncHero() {
+    if (reduceMotion.matches || document.hidden || !heroVisible) stopHero();
+    else startHero();
 }
 
 if (!reduceMotion.matches) {
     readAccent();
     resizeCanvas();
-    initParticles();
-    startParticles();
+    initNodes();
+    startHero();
     window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
-    window.addEventListener('resize', () => { resizeCanvas(); initParticles(); }, { passive: true });
-    document.addEventListener('visibilitychange', syncParticles);
+    window.addEventListener('resize', () => { resizeCanvas(); initNodes(); }, { passive: true });
+    document.addEventListener('visibilitychange', syncHero);
     document.addEventListener('themechange', readAccent);
-    reduceMotion.addEventListener('change', syncParticles);
+    reduceMotion.addEventListener('change', syncHero);
     new IntersectionObserver(entries => {
         heroVisible = entries[0].isIntersecting;
-        syncParticles();
+        syncHero();
     }).observe(document.getElementById('hero'));
 } else {
     canvas.remove();
@@ -813,14 +906,26 @@ async function sendMessage() {
         const response = await fetch(`${WORKER_URL}/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ model: modelId, messages: conversationHistory, temperature: 0.7 })
+            body: JSON.stringify({ model: modelId, messages: conversationHistory, temperature: 0.7, stream: true })
         });
-        const data = await response.json();
-        typing.remove();
-        if (data.error) throw new Error(data.error.message || 'Error en la API');
-        const reply = (data.choices?.[0]?.message?.content || '').trim();
+
+        // The Worker deploys separately from this page. An older Worker ignores
+        // `stream` and answers with buffered JSON, so branch on what came back
+        // rather than on what we asked for.
+        const streaming = response.ok && response.body
+            && (response.headers.get('content-type') || '').includes('text/event-stream');
+
+        let reply;
+        if (streaming) {
+            reply = await streamReply(response, typing);
+        } else {
+            const data = await response.json();
+            typing.remove();
+            if (data.error) throw new Error(data.error.message || 'Error en la API');
+            reply = (data.choices?.[0]?.message?.content || '').trim();
+            addMessage('assistant', reply || t('chat.empty'));
+        }
         conversationHistory.push({ role: 'assistant', content: reply });
-        addMessage('assistant', reply || t('chat.empty'));
     } catch (error) {
         typing.remove();
         conversationHistory.pop();          // don't poison the history with a failed turn
@@ -829,6 +934,82 @@ async function sendMessage() {
     sendBtn.disabled = false;
     sendBtn.removeAttribute('aria-busy');
     userInputEl.focus();
+}
+
+// Reads the Worker's SSE relay and paints tokens as they arrive. Returns the
+// full reply so the caller can append it to the conversation history.
+async function streamReply(response, typing) {
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let text = '';
+    let live = null;
+    let queued = false;
+
+    // Re-parsing markdown on every token is wasteful; repaint once per frame.
+    const paint = () => {
+        if (queued || !live) return;
+        queued = true;
+        requestAnimationFrame(() => {
+            queued = false;
+            if (!live) return;
+            live.innerHTML = renderMarkdown(text);
+            scrollChatToEnd();
+        });
+    };
+
+    try {
+        for (;;) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+
+            // SSE frames are blank-line separated; keep the partial tail back.
+            const frames = buffer.split('\n\n');
+            buffer = frames.pop();
+
+            for (const frame of frames) {
+                for (const line of frame.split('\n')) {
+                    if (!line.startsWith('data:')) continue;
+                    const payload = line.slice(5).trim();
+                    if (!payload || payload === '[DONE]') continue;
+
+                    let json;
+                    try { json = JSON.parse(payload); } catch (err) { continue; }
+                    if (json.error) throw new Error(json.error.message || 'Error en la API');
+
+                    const delta = json.choices?.[0]?.delta?.content;
+                    if (!delta) continue;
+
+                    // Swap the thinking dots for a real bubble on the first token.
+                    if (!live) {
+                        typing.remove();
+                        live = addMessage('assistant', '').querySelector('.msg-body');
+                        live.classList.add('streaming');
+                    }
+                    text += delta;
+                    paint();
+                }
+            }
+        }
+    } finally {
+        reader.cancel().catch(() => { /* already closed */ });
+    }
+
+    typing.remove();
+    text = text.trim();
+
+    // Detach `live` before the final write so a queued frame cannot repaint it.
+    const finalEl = live;
+    live = null;
+    if (finalEl) {
+        finalEl.classList.remove('streaming');
+        finalEl.innerHTML = renderMarkdown(text || t('chat.empty'));
+        scrollChatToEnd();
+    } else {
+        addMessage('assistant', text || t('chat.empty'));
+    }
+    return text;
 }
 
 function addMessage(role, content) {
@@ -845,6 +1026,7 @@ function addMessage(role, content) {
     `;
     chatMessagesEl.appendChild(div);
     scrollChatToEnd();
+    return div;
 }
 
 function escapeHtml(text) {

@@ -22,13 +22,16 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Constantino Ferrucci | Senior GenAI Engineer">
     <meta name="twitter:description" content="Senior Generative AI Engineer. Production RAG systems, LLM architecture, AI backend engineering.">
-    <!-- TODO: agregar una imagen 1200x630 y descomentar estas dos lineas
-    <meta property="og:image" content="https://constantinoferrucci.com.ar/og-image.png">
-    <meta name="twitter:image" content="https://constantinoferrucci.com.ar/og-image.png"> -->
+    <meta property="og:image" content="https://constantinoferrucci.com.ar/assets/og/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Constantino Ferrucci — Senior Generative AI Engineer, Montevideo, Uruguay">
+    <meta name="twitter:image" content="https://constantinoferrucci.com.ar/assets/og/og-image.png">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%236366f1'/%3E%3Cstop offset='100%25' style='stop-color:%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-family='Arial Black' font-size='45' font-weight='bold' text-anchor='middle' fill='white'%3ECF%3C/text%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts are self-hosted (assets/fonts), so there is no third-party round
+         trip before first paint. Preload only the two faces the hero needs. -->
+    <link rel="preload" href="assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/space-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
     <script>
     // Applied before first paint: no flash of the wrong theme on reload.
     (function () {
@@ -59,7 +62,8 @@
 </head>
 <body>
 
-<canvas id="particleCanvas"></canvas>
+<div class="scroll-progress" aria-hidden="true"></div>
+<canvas id="heroCanvas" aria-hidden="true"></canvas>
 
 <a href="#main" class="skip-link" data-i18n="a11y.skip">Skip to content</a>
 
