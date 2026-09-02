@@ -13,7 +13,9 @@ in-page AI assistant.
 ├── assets/
 │   ├── css/styles.css         All styles: theme tokens, layout, components
 │   ├── js/app.js              i18n, theme switch, chat client, animations
-│   └── cv/                    Downloadable CV
+│   ├── fonts/                 Self-hosted variable fonts (latin subset)
+│   ├── cv/                    Downloadable CV
+│   └── og/                    Social preview image + the page that renders it
 └── worker/worker.js           Cloudflare Worker: /models and /chat endpoints
 ```
 
@@ -43,9 +45,36 @@ Then visit <http://localhost:8000>.
 - English copy is the source of truth and is written inline in the HTML, so
   the page stays readable and indexable with JavaScript disabled. Spanish
   translations are applied at runtime from the i18n table in `app.js`.
+- **Fonts are self-hosted.** One variable `.woff2` per family covers every
+  weight, which removes a render-blocking round trip to a third party. No
+  `unicode-range` is declared: with a single local file it saves nothing and
+  would push glyphs outside the range onto a fallback face.
+- **Motion is always opt-out.** Anything decorative checks
+  `prefers-reduced-motion` and renders its final state instead of a shortened
+  animation.
+- The `.reveal` fade runs on an IntersectionObserver rather than a `view()`
+  scroll timeline. A scroll timeline looks the same but can strand an element
+  mid-animation when the page bottoms out before its range completes, and
+  half-faded content is the one failure this site cannot ship.
+
+## Regenerating the social preview
+
+`assets/og/og-image.html` renders the card; `assets/og/og-image.png` is the
+committed result that the `og:image` tags point at. To rebuild it after
+changing the title or role:
+
+```bash
+chrome --headless=new --disable-gpu --window-size=1200,630 \
+       --screenshot=assets/og/og-image.png assets/og/og-image.html
+```
 
 ## Deployment
 
 - **Site** — GitHub Pages publishes automatically on every push to `main`.
 - **Worker** — `worker/worker.js` is deployed separately to Cloudflare. The
   frontend reaches it through `WORKER_URL` in `assets/js/app.js`.
+
+The two deploy independently, so the chat client asks for `stream: true` but
+branches on the `content-type` that actually comes back. A Worker that predates
+streaming answers with buffered JSON and the page still works — it just renders
+the reply in one piece. Redeploy the Worker to turn streaming on.

@@ -179,6 +179,8 @@ export default {
           ...body.messages
         ];
 
+        const stream = body.stream === true;
+
         const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
           method: 'POST',
           headers: {
@@ -191,9 +193,26 @@ export default {
             model: body.model || DEFAULT_MODEL,
             messages: apiMessages,
             temperature: body.temperature ?? 0.7,
-            max_tokens: body.max_tokens ?? 1024
+            max_tokens: body.max_tokens ?? 1024,
+            ...(stream ? { stream: true } : {})
           })
         });
+
+        // A failure upstream still arrives as JSON even when SSE was requested,
+        // so surface it as a normal error instead of opening an empty stream.
+        if (stream && res.ok && res.headers.get('content-type')?.includes('text/event-stream')) {
+          return new Response(res.body, {
+            status: 200,
+            headers: {
+              ...corsHeaders,
+              'Content-Type': 'text/event-stream; charset=utf-8',
+              'Cache-Control': 'no-cache, no-transform',
+              'Connection': 'keep-alive',
+              'X-Accel-Buffering': 'no'
+            }
+          });
+        }
+
         const data = await res.json();
 
         if (data.error) {

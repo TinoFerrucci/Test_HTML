@@ -1,3 +1,33 @@
+/* ==================== FONTS ====================
+   Self-hosted variable fonts, latin subset. One file per family covers every
+   weight, which is why no `unicode-range` is declared: with a single local file
+   it saves no bytes and would push glyphs outside the range (the palette's ↵)
+   onto a fallback face. Serving these from the same origin also removes the
+   render-blocking round trip to fonts.googleapis.com + fonts.gstatic.com. */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 300 900;
+    font-display: swap;
+    src: url('../fonts/inter-var.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('../fonts/jetbrains-mono-var.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Space Grotesk';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('../fonts/space-grotesk-var.woff2') format('woff2');
+}
+
 /* ==================== THEME TOKENS ====================
    Light is the base layer; dark overrides live in the two blocks below
    (system preference + explicit [data-theme] override). Never define a
@@ -228,7 +258,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 
 /* CANVAS BG */
-#particleCanvas {
+#heroCanvas {
     opacity: 0.55;
     position: fixed;
     top: 0;
@@ -2613,6 +2643,70 @@ button, input, select, textarea { font: inherit; color: inherit; }
     .tl-col-head { font-size: 0.66rem; }
 }
 
+/* ==================== STREAMING CURSOR ====================
+   Shown only while tokens are still arriving from the model. */
+.msg-body.streaming::after {
+    content: '';
+    display: inline-block;
+    width: 0.55em;
+    height: 1.05em;
+    margin-left: 0.12em;
+    vertical-align: -0.18em;
+    background: var(--accent);
+    border-radius: 1px;
+    animation: caret-blink 1s steps(2, start) infinite;
+}
+
+@keyframes caret-blink {
+    to { visibility: hidden; }
+}
+
+/* ==================== SCROLL PROGRESS ====================
+   Scroll-driven animation with no JS and no scroll listener: the bar's scale is
+   tied straight to the document timeline, so it runs on the compositor.
+
+   The `.reveal` fade deliberately stays on its IntersectionObserver. A `view()`
+   timeline there would look identical but can strand an element mid-animation
+   when the page bottoms out before its range completes, and content stuck at
+   partial opacity is the one failure a portfolio cannot afford. This bar is
+   safe by construction: unsupported browsers just get scaleX(0) — an invisible
+   decoration — instead of unreadable content. */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 300;
+    width: 100%;
+    height: 2px;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    background: linear-gradient(90deg, var(--accent), var(--purple), var(--pink));
+    pointer-events: none;
+}
+
+@supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+        .scroll-progress {
+            animation: scroll-progress linear;
+            animation-timeline: scroll(root block);
+        }
+    }
+}
+
+@keyframes scroll-progress {
+    to { transform: scaleX(1); }
+}
+
+/* ==================== VIEW TRANSITIONS ====================
+   Theme and language swaps repaint most of the page at once. A short
+   cross-fade keeps that from reading as a flash. */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 260ms;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    mix-blend-mode: normal;
+}
+
 /* ==================== REDUCED MOTION ====================
    Everything here is decorative: render the final state immediately
    and stop the looping animations rather than just shortening them. */
@@ -2635,7 +2729,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
     .float-card { animation: none !important; }
 
-    #particleCanvas { display: none; }
+    #heroCanvas { display: none; }
 
     .flow-node { opacity: 1 !important; transform: none !important; animation: none !important; }
     .flow-node::after { display: none !important; }
@@ -2643,4 +2737,11 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
     .btn:hover, .stat-card:hover, .skill-card:hover,
     .project-card:hover, .send-btn:hover { transform: none !important; }
+
+    /* The universal reset above cannot reach the view-transition pseudo tree. */
+    ::view-transition-old(root),
+    ::view-transition-new(root) { animation: none !important; }
+
+    /* Keep the caret visible as a state cue, just stop it blinking. */
+    .msg-body.streaming::after { animation: none !important; }
 }
