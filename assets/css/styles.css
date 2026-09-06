@@ -1652,6 +1652,27 @@ button, input, select, textarea { font: inherit; color: inherit; }
     background: rgba(var(--accent-rgb),0.06);
 }
 
+/* PROJECT METRICS — same chip language as .project-tag, but an accent-tinted
+   readout instead of a neutral stack label. Plain facts only, no i18n. */
+.project-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 16px;
+}
+
+.project-metrics span {
+    padding: 4px 10px;
+    background: rgba(var(--accent-rgb),0.08);
+    border: 1px solid rgba(var(--accent-rgb),0.25);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent-light);
+    white-space: nowrap;
+}
+
 .project-highlights {
     list-style: none;
     padding: 0;
