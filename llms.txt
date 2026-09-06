@@ -1,0 +1,36 @@
+# Constantino Ferrucci
+
+Senior Generative AI Engineer (contractor via Tata Consultancy Services) working with Apple.
+Based in Montevideo, Uruguay. Open to international opportunities.
+
+Site: https://constantinoferrucci.com.ar/
+GitHub: https://github.com/TinoFerrucci
+LinkedIn: https://www.linkedin.com/in/constantinoferrucci
+Email: constantinoferrucci@gmail.com
+
+## What I do
+
+Enterprise RAG architecture (semantic and hybrid search, metadata filtering,
+re-ranking, traceable ingestion pipelines), reliability and evaluation
+(hallucination mitigation, guardrails, evals, observability), and AI backend
+engineering (FastAPI microservices, containerized deploys, pgvector/Postgres).
+
+## Flagship projects
+
+- SynergyX-AI — plain-language project briefs matched to interdisciplinary teams via embeddings, with explainable assignments. FastAPI + React + TypeScript. https://github.com/TinoFerrucci/SynergyX-AI
+- Datagentra — autonomous data analyst: 5-step agent (SQL generation with retries, summary, chart suggestion) behind a read-only SQL guard. OpenAI or local Ollama, Docker Compose. https://github.com/TinoFerrucci/Datagentra
+- fastapi-fastmcp-autogen — write logic once, get a REST API and MCP tools in both directions (MCP to FastAPI and FastAPI to MCP) with near-zero config and free Swagger docs. https://github.com/TinoFerrucci/fastapi-fastmcp-autogen
+- Dog breed recognition pipeline — three-stage computer-vision pipeline (embedding similarity, classification, detection) with async FastAPI 202 jobs, pgvector storage, and NDCG@10 scoring. Authored for teaching. https://github.com/TinoFerrucci/tuia-dog-recognition-app
+
+## Teaching
+
+Auxiliar de Primera in Computer Vision (and formerly NLP) at the Universidad
+Nacional de Rosario, Tecnicatura Universitaria en Inteligencia Artificial.
+Degree in AI (2022-2024), Licenciatura in progress. Background in
+electromechanics before software.
+
+## Contact
+
+Fastest via email (constantinoferrucci@gmail.com) or LinkedIn
+(https://www.linkedin.com/in/constantinoferrucci). The site also hosts an AI
+assistant that answers questions about this background.
