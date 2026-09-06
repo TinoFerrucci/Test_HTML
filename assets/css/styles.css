@@ -15,7 +15,7 @@
 @font-face {
     font-family: 'JetBrains Mono';
     font-style: normal;
-    font-weight: 400 700;
+    font-weight: 100 900;
     font-display: swap;
     src: url('../fonts/jetbrains-mono-var.woff2') format('woff2');
 }
@@ -93,6 +93,9 @@
     --dur-fast: 0.15s;
     --dur: 0.3s;
     --dur-slow: 0.6s;
+
+    /* type */
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 /* dark: system preference, unless the user explicitly picked light */
@@ -294,7 +297,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 1.1rem;
     font-weight: 600;
     background: linear-gradient(135deg, var(--accent), var(--purple));
@@ -638,7 +641,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 500;
     color: var(--accent);
@@ -811,7 +814,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .skill-level {
     font-size: 0.7rem;
     color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
 }
 
 /* EXPERIENCE — two tracks either side of a central rail */
@@ -847,7 +850,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
     border-radius: 100px;
     background: rgba(var(--accent-rgb),0.08);
     border: 1px solid rgba(var(--accent-rgb),0.20);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -909,7 +912,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .tl-aca .tl-item::before { border-color: var(--purple); box-shadow: 0 0 0 4px rgba(var(--purple-rgb),0.12); }
 
 .tl-date {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.72rem;
     color: var(--accent);
     margin-bottom: 8px;
@@ -1038,7 +1041,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .toolbar-title {
     font-size: 0.8rem;
     color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
 }
 
 .chat-toolbar-right {
@@ -1078,7 +1081,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
     border-radius: 8px;
     font-size: 0.75rem;
     color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     transition: all 0.2s ease;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -1111,7 +1114,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
     border-radius: 8px;
     font-size: 0.75rem;
     color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
 
     width: 180px;
     transition: all 0.2s ease;
@@ -1167,7 +1170,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .model-option-id {
     font-size: 0.7rem;
     color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     margin-top: 2px;
 }
 
@@ -1178,7 +1181,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
     color: var(--accent-light);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     background: rgba(var(--accent-rgb),0.06);
     border-bottom: 1px solid var(--border);
     position: sticky;
@@ -1270,7 +1273,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
     background: var(--code-bg);
     padding: 2px 7px;
     border-radius: 5px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.82rem;
     color: var(--accent-light);
 }
@@ -1464,7 +1467,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
     text-align: center;
     padding: 10px;
     font-size: 0.75rem;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     color: var(--text-muted);
 }
 
@@ -1642,7 +1645,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
     font-size: 0.7rem;
     font-weight: 500;
     color: var(--text-secondary);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     transition: all 0.2s ease;
 }
 
@@ -1785,7 +1788,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
     color: var(--text-secondary);
     font-size: 0.78rem;
     font-weight: 600;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 
@@ -1929,7 +1932,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 
 .skill-row-label {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.68rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -1967,7 +1970,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
     font-size: 0.78rem;
     line-height: 1.6;
     color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
 }
 
 /* The half-width cards have no room for a 168px label rail — this is a
@@ -2030,7 +2033,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .advanced-hint {
     font-size: 0.72rem;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     color: var(--text-muted);
     margin: 0;
 }
@@ -2074,7 +2077,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
     background: rgba(var(--accent-rgb),0.14);
     border: 1px solid rgba(var(--accent-rgb),0.32);
     color: var(--accent-light);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.66rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -2103,7 +2106,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 
 .flow-caption-label {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.72rem;
     font-weight: 500;
     letter-spacing: 0.14em;
@@ -2276,7 +2279,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .cmdk-mod { margin-right: 3px; }
 
 .cmdk-key {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.68rem;
     font-weight: 600;
     padding: 3px 7px;
@@ -2351,7 +2354,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 #cmdkInput::placeholder { color: var(--text-muted); }
 
 .cmdk-esc {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.65rem;
     padding: 4px 8px;
     border-radius: 6px;
@@ -2370,7 +2373,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .cmdk-group {
     padding: 12px 12px 6px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -2400,7 +2403,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .cmdk-item .cmdk-hint {
     margin-left: auto;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.68rem;
     color: var(--text-muted);
 }
@@ -2422,7 +2425,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 
 .cmdk-foot kbd {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     padding: 2px 6px;
     border-radius: 5px;
     background: var(--inset-strong);
