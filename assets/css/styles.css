@@ -695,6 +695,37 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .about-text strong { color: var(--text); }
 
+/* ABOUT PORTRAIT — expects assets/img/profile.jpg (drop the file in, no code
+   change needed). No gradient overlay, no motion: the photo is content, not
+   decoration. Broken/missing file degrades to alt text on a themed surface. */
+.about-profile {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 250px;
+    margin: 0 0 36px;
+}
+
+.about-profile img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    filter: saturate(0.92) contrast(1.02);
+}
+
+.about-profile figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+}
+
 .about-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
