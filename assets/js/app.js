@@ -718,6 +718,44 @@ const DEFAULT_MODEL_ID = 'openai/gpt-5.6-terra';
 let conversationHistory = [];
 let allModels = [];
 let modelsByProvider = {};
+
+// ==================== LAZY CHAT MARKDOWN DEPS ====================
+// marked + DOMPurify ship zero bytes on first paint. They are injected on the
+// first sign the visitor wants the chat (input focus/click, a suggestion tap,
+// or the chat section scrolling into view) and the promise is cached, so the
+// pair loads at most once. Until they arrive — or if the CDN fails —
+// renderMarkdown() below falls back to escaped plain text, never innerHTML
+// of untrusted content.
+const CHAT_DEPS = [
+    'https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js',
+    'https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js'
+];
+let chatDepsPromise = null;
+
+function ensureChatDeps() {
+    if (typeof marked !== 'undefined' && typeof DOMPurify !== 'undefined') {
+        return Promise.resolve();
+    }
+    if (!chatDepsPromise) {
+        chatDepsPromise = Promise.all(CHAT_DEPS.map(src => new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = src;
+            s.async = true;
+            s.onload = resolve;
+            s.onerror = () => reject(new Error('Failed to load ' + src));
+            document.head.appendChild(s);
+        })));
+    }
+    return chatDepsPromise;
+}
+
+let chatDepsKicked = false;
+function kickChatDeps() {
+    if (chatDepsKicked) return chatDepsPromise;
+    chatDepsKicked = true;
+    ensureChatDeps().catch(() => { /* renderMarkdown() falls back to plain text */ });
+    return chatDepsPromise;
+}
 const chatMessagesEl = document.getElementById('chatMessages');
 const userInputEl = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
@@ -747,11 +785,20 @@ advancedBtn.addEventListener('click', () => {
 
 // One tap to ask the questions people actually want answered
 suggestionsEl.addEventListener('click', e => {
+    kickChatDeps();
     const chip = e.target.closest('.suggestion');
     if (!chip) return;
     userInputEl.value = chip.textContent.trim();
     sendMessage();
 });
+
+// First chat intent pulls the markdown deps in the background, so they are
+// warm by the time the first reply needs rendering.
+userInputEl.addEventListener('focus', kickChatDeps, { once: true });
+userInputEl.addEventListener('click', kickChatDeps, { once: true });
+new IntersectionObserver((entries, obs) => {
+    if (entries[0].isIntersecting) { kickChatDeps(); obs.disconnect(); }
+}).observe(document.getElementById('chat'));
 
 async function loadModels() {
     const status = statusEl;
@@ -1036,8 +1083,13 @@ function escapeHtml(text) {
 }
 
 // Model output is untrusted input: parse it, then sanitize before it touches the DOM.
+// Before the lazy deps arrive (or if the CDN fails), fall back to escaped
+// plain text — safe by construction, just less pretty.
 function renderMarkdown(text) {
     try {
+        if (typeof marked === 'undefined' || typeof marked.parse !== 'function') {
+            return escapeHtml(text);
+        }
         const html = marked.parse(text);
         return (typeof DOMPurify !== 'undefined') ? DOMPurify.sanitize(html) : escapeHtml(text);
     } catch (err) {

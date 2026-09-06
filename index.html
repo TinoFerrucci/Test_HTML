@@ -41,8 +41,9 @@
         } catch (e) { /* private mode or storage blocked: fall back to prefers-color-scheme */ }
     })();
     </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+    <!-- Chat markdown deps (marked + DOMPurify) load lazily on first chat
+         intent via ensureChatDeps() in app.js, so first paint ships no
+         third-party JS. -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
