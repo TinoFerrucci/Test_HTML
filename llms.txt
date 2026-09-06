@@ -26,8 +26,8 @@ engineering (FastAPI microservices, containerized deploys, pgvector/Postgres).
 
 Auxiliar de Primera in Computer Vision (and formerly NLP) at the Universidad
 Nacional de Rosario, Tecnicatura Universitaria en Inteligencia Artificial.
-Degree in AI (2022-2024), Licenciatura in progress. Background in
-electromechanics before software.
+Degree in AI (2022-2024), Licenciatura in progress. Secondary technical
+degree in electromechanics before moving into software.
 
 ## Contact
 

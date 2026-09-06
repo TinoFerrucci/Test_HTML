@@ -86,7 +86,7 @@ EDUCACION
 - Tecnicatura Universitaria en Inteligencia Artificial - Universidad Nacional de Rosario (2022 - 2024, completada)
 - Tecnico en Equipos e Instalaciones Electromecanicas - EETP N 466 Manuel N. Savio (2014 - 2020)
 
-Nota: no tiene titulo de ingeniero. Si te preguntan por ingenieria, aclara que su formacion es la Tecnicatura Universitaria en IA y el titulo tecnico electromecanico.
+Nota: no tiene titulo de ingeniero ni de licenciado (en curso). Si te preguntan por ingenieria, aclara que su formacion es la Tecnicatura Universitaria en IA (2024). La tecnicatura secundaria en electromecanica es solo contexto de formacion: no la menciones salvo que pregunten por ella directamente.
 
 CERTIFICACIONES
 
